@@ -15,19 +15,20 @@ class Page:
     def relative_path(self):
         return self.path.removeprefix(f'{PROJECT_PATH}/')
 
-    @property
-    def text(self):
+    def as_text(self):
         return ''.join(self.lines)
 
-    @property
     def uses_layout(self):
         if self.layout_name:
             return True
         return False
 
+    def dir_level(self):
+        dirs = self.relative_path.split('/')
+        return len(dirs) - 1
+
     def in_sub_dir(self):
-        parts = self.relative_path.split('/')
-        if len(parts) > 1:
+        if self.dir_level() > 0:
             return True
         return False
 
@@ -64,6 +65,24 @@ class Page:
                     b.content += line
 
         logging.debug(self.blocks)
+
+    def update_relative_paths(self):
+        # TODO - what about multiple path tags in a single line?
+        for index, line in enumerate(self.lines):
+            has_path = line.find('{% path')
+
+            if has_path > -1:
+                path_start = has_path + 8
+                path_end = line.find(' %}')
+
+                raw_path = line[path_start:path_end]
+                path_tag = '{% path ' + raw_path + ' %}'
+
+                for i in range(self.dir_level()):
+                    raw_path = f'../{raw_path}'
+
+                rel_path = line.replace(path_tag, raw_path)
+                self.lines[index] = rel_path
 
 
     def __str__(self):

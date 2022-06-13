@@ -31,9 +31,10 @@ def sitegen():
 
     for page in pages:
         logging.info(f'Compiling page: {page.relative_path}')
-        if page.uses_layout:
+        if page.uses_layout():
             layout = layouts.get(page.layout_name)
             page.lines = layout.compile(page)
+        page.update_relative_paths()
         lines = Snippet.insert(page.lines, snippets)
 
         if (page.in_sub_dir()):
