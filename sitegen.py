@@ -3,7 +3,7 @@ import os
 import shutil
 
 from components.layout import Layout
-from components.page import Page
+from components.projectfile import ProjectFile
 from components.snippet import Snippet
 
 from config import DIST_PATH, LOG_FORMAT
@@ -25,25 +25,25 @@ def sitegen():
     snippets = Snippet.get_all()
     logging.debug(snippets)
 
-    logging.info('Loading Pages...')
-    pages = Page.load_pages()
-    logging.debug(pages)
+    logging.info('Loading ProjectFiles...')
+    project_files = ProjectFile.load_project_files()
+    logging.debug(project_files)
 
-    for page in pages:
-        if page.get_type() in Page.HTML_TYPES:
-            logging.info(f'Compiling page: {page.relative_path()}')
-            if page.uses_layout():
-                layout = layouts.get(page.layout_name)
-                page.lines = layout.compile(page)
-            page.update_relative_paths()
-            page.lines = Snippet.insert(page.lines, snippets)
+    for pf in project_files:
+        if pf.get_type() in ProjectFile.HTML_TYPES:
+            logging.info(f'Compiling ProjectFile: {pf.relative_path()}')
+            if pf.uses_layout():
+                layout = layouts.get(pf.layout_name)
+                pf.lines = layout.compile(pf)
+            pf.update_relative_paths()
+            pf.lines = Snippet.insert(pf.lines, snippets)
 
-        if (page.in_sub_dir()):
-            sub_dir = f'{DIST_PATH}/{os.path.dirname(page.relative_path())}'
+        if (pf.in_sub_dir()):
+            sub_dir = f'{DIST_PATH}/{os.path.dirname(pf.relative_path())}'
             os.makedirs(sub_dir, exist_ok=True)
 
-        with open(f'{DIST_PATH}/{page.relative_path()}', 'w', newline='') as outfile:
-            outfile.writelines(page.lines)
+        with open(f'{DIST_PATH}/{pf.relative_path()}', 'w', newline='') as outfile:
+            outfile.writelines(pf.lines)
 
     # TODO - user sys stdout instead?
     print(f'Static site generation complete. Output files exported to: {DIST_PATH}/')

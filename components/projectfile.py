@@ -3,7 +3,7 @@ import os
 
 from config import PROJECT_PATH
 
-class Page:
+class ProjectFile:
 
     HTML_TYPES = {'html', 'htm'}
 
@@ -53,7 +53,7 @@ class Page:
         self.blocks = []
 
         parsing_block = False
-        b = Page.Block()
+        b = ProjectFile.Block()
 
         for line in self.lines:
 
@@ -66,7 +66,7 @@ class Page:
                     b.content = b.content.rstrip('\n\r')
                     self.blocks.append(b)
                     parsing_block = False
-                    b = Page.Block()
+                    b = ProjectFile.Block()
                 else:
                     b.content += line
 
@@ -92,20 +92,20 @@ class Page:
 
 
     def __str__(self):
-        return f'Page(relative_path={self.relative_path()})'
+        return f'ProjectFile(relative_path={self.relative_path()})'
 
     def __repr__(self):
-        return f'Page(relative_path={self.relative_path()})'
+        return f'ProjectFile(relative_path={self.relative_path()})'
 
     @classmethod
-    def load_pages(cls, path=PROJECT_PATH):
-        pages = []
-        for item in os.listdir(path):
-            if not os.path.isdir(f'{path}/{item}'):
-                pages.append(Page(f'{path}/{item}'))
+    def load_project_files(cls, path=PROJECT_PATH):
+        project_files = []
+        for pf in os.listdir(path):
+            if not os.path.isdir(f'{path}/{pf}'):
+                project_files.append(ProjectFile(f'{path}/{pf}'))
             else:
-                pages += cls.load_pages(path=f'{path}/{item}')
-        return pages
+                project_files += cls.load_project_files(path=f'{path}/{pf}')
+        return project_files
 
 
     class Block:

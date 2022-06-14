@@ -16,12 +16,12 @@ class Layout:
         with open(f'{LAYOUTS_PATH}/{self.file_name}', 'r', newline='') as htmlfile:
             self.lines = htmlfile.readlines()
 
-    def compile(self, page):
+    def compile(self, html_file):
         new_lines = []
         for line in self.lines:
              # INVESTIGATE - It might be more optimized to check each
             # line for any tags before calling compile
-            for b in page.blocks:
+            for b in html_file.blocks:
                 line = line.replace(b.tag_name, b.content)
             new_lines.append(line)
         return new_lines
