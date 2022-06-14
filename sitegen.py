@@ -30,13 +30,13 @@ def sitegen():
     logging.debug(project_files)
 
     for pf in project_files:
-        if pf.get_type() in ProjectFile.HTML_TYPES:
+        if pf.get_extention() in ProjectFile.HTML_TYPES:
             logging.info(f'Compiling ProjectFile: {pf.relative_path()}')
-            if pf.uses_layout():
+            if pf.extends_layout():
                 layout = layouts.get(pf.layout_name)
                 pf.lines = layout.compile(pf)
             pf.update_relative_paths()
-            pf.lines = Snippet.insert(pf.lines, snippets)
+            pf.lines = Snippet.insert(pf, snippets)
 
         if (pf.in_sub_dir()):
             sub_dir = f'{DIST_PATH}/{os.path.dirname(pf.relative_path())}'
