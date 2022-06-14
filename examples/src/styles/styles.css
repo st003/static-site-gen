@@ -1,0 +1,35 @@
+/* External CSS */
+:root {
+    --primary-color: #222222;
+    --secondary-color: #008000;
+    --light-text: white;
+}
+
+html {
+    font-size: 1rem;
+}
+body {
+    padding: 0.5rem;
+}
+
+nav a {
+    display: inline-block;
+    padding: 1rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 0.25rem;
+    color: var(--primary-color);
+    font-size: 1rem;
+    text-decoration: none;
+}
+nav a:hover {
+    background-color: var(--secondary-color);
+    color: var(--light-text);
+}
+
+main {
+    margin-top: 1rem;
+}
+
+.subpage {
+    color: var(--secondary-color);
+}

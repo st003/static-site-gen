@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" href="{% path styles/styles.css %}">
 		<title>{% block title %}</title>
 	</head>
 	<body>
 		<nav>
 			<a href="{% path index.html %}">Home</a>
-			<a href="{% path st003/index.html %}">st003</a>
+			<a href="{% path subpage/index.html %}">Sub-Page</a>
 		</nav>
 		<main>
 			{% block main %}
 		</main>
+		<script src="{% path scripts/scripts.js %}"></script>
 	</body>
 </html>

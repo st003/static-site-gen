@@ -5,15 +5,21 @@ from config import PROJECT_PATH
 
 class Page:
 
+    HTML_TYPES = {'html', 'htm'}
+
     def __init__(self, path):
         self.path = path
         self.load_file()
         self.load_layout()
         self.load_blocks()
 
-    @property
     def relative_path(self):
         return self.path.removeprefix(f'{PROJECT_PATH}/')
+
+    def get_type(self):
+        parts = self.path.split('.')
+        extention = len(parts) - 1
+        return parts[extention]
 
     def as_text(self):
         return ''.join(self.lines)
@@ -24,7 +30,7 @@ class Page:
         return False
 
     def dir_level(self):
-        dirs = self.relative_path.split('/')
+        dirs = self.relative_path().split('/')
         return len(dirs) - 1
 
     def in_sub_dir(self):
@@ -86,10 +92,10 @@ class Page:
 
 
     def __str__(self):
-        return f'Page(relative_path={self.relative_path})'
+        return f'Page(relative_path={self.relative_path()})'
 
     def __repr__(self):
-        return f'Page(relative_path={self.relative_path})'
+        return f'Page(relative_path={self.relative_path()})'
 
     @classmethod
     def load_pages(cls, path=PROJECT_PATH):

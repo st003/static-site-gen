@@ -30,19 +30,20 @@ def sitegen():
     logging.debug(pages)
 
     for page in pages:
-        logging.info(f'Compiling page: {page.relative_path}')
-        if page.uses_layout():
-            layout = layouts.get(page.layout_name)
-            page.lines = layout.compile(page)
-        page.update_relative_paths()
-        lines = Snippet.insert(page.lines, snippets)
+        if page.get_type() in Page.HTML_TYPES:
+            logging.info(f'Compiling page: {page.relative_path()}')
+            if page.uses_layout():
+                layout = layouts.get(page.layout_name)
+                page.lines = layout.compile(page)
+            page.update_relative_paths()
+            page.lines = Snippet.insert(page.lines, snippets)
 
         if (page.in_sub_dir()):
-            sub_dir = f'{DIST_PATH}/{os.path.dirname(page.relative_path)}'
+            sub_dir = f'{DIST_PATH}/{os.path.dirname(page.relative_path())}'
             os.makedirs(sub_dir, exist_ok=True)
 
-        with open(f'{DIST_PATH}/{page.relative_path}', 'w', newline='') as outfile:
-            outfile.writelines(lines)
+        with open(f'{DIST_PATH}/{page.relative_path()}', 'w', newline='') as outfile:
+            outfile.writelines(page.lines)
 
     # TODO - user sys stdout instead?
     print(f'Static site generation complete. Output files exported to: {DIST_PATH}/')
