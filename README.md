@@ -5,15 +5,18 @@ A Python program for compiling static web files. User defined layouts and snippe
 ### Prerequisites
 
 Python 3.6+
-Supports Windows, MacOS, Linux
 
 ### Installing
 
-Download a copy of the repository and extract to your file system. A simple site can be found in the examples directory.
+Download a copy of the repository and extract to your file system. A simple example project site can be found in the examples directory.
 
 ## Running the tests
 
-There are no tests at this time
+From the program root directory, run:
+
+```
+python -m unittest discover tests
+```
 
 ## Built With
 
