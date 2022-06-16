@@ -1,6 +1,6 @@
 # Static Site Generator
 
-A Python program for compiling static web files. User defined layouts and snippets allow for dynamically inserting text into HTML pages. Example uses in include inserting repetitive markup like navigation, CSS, and JavasScript into multiple pages.
+A Jinja-inspired Python program for compiling static web files. User defined layouts and snippets allow for dynamically inserting text into HTML pages. Example uses include inserting redundant markup like navigation, CSS, and JavasScript into multiple pages.
 
 ### Prerequisites
 
