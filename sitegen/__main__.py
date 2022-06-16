@@ -2,11 +2,11 @@ import logging
 import os
 import shutil
 
-from components.layout import Layout
-from components.projectfile import ProjectFile
-from components.snippet import Snippet
+from .components.layout import Layout
+from .components.projectfile import ProjectFile
+from .components.snippet import Snippet
 
-from config import DIST_PATH, LOG_FORMAT
+from .config import DIST_PATH, LOG_FORMAT
 
 def sitegen():
 
