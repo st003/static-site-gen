@@ -16,17 +16,13 @@ class Snippet:
         name = self.file_name.split('.')[0]
         return '{{ ' + name + ' }}'
 
-    def to_string(self):
-        """Returns all file lines as a string."""
-        return ''.join(self.lines)
-
     def load_file(self):
         """Opens and reads in lines from an HTML file in the snippets directory."""
         with open(f'{SNIPPETS_PATH}/{self.file_name}', 'r', newline='') as html_file:
             self.lines = html_file.readlines()
 
     def __str__(self):
-        return f'Snippet(file_name={self.file_name})'
+        return ''.join(self.lines)
 
     def __repr__(self):
         return f'Snippet(file_name={self.file_name})'
@@ -38,7 +34,7 @@ class Snippet:
         for index, line in enumerate(lines):
             # OPTIMIZE - store blocks in a dict to eliminiate nested loops
             for s in snippets:
-                line = line.replace(s.tag_name(), s.to_string())
+                line = line.replace(s.tag_name(), str(s))
             lines[index] = line
         return lines
 

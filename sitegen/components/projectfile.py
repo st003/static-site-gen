@@ -29,10 +29,6 @@ class ProjectFile:
         extention = len(parts) - 1
         return parts[extention]
 
-    def to_string(self):
-        """Returns all text lines into a single string."""
-        return ''.join(self.lines)
-
     def extends_layout(self):
         """Returns a boolean indicating if this ProjectFile extends a layout."""
         if self.layout_name:
@@ -111,7 +107,7 @@ class ProjectFile:
 
 
     def __str__(self):
-        return f'ProjectFile(relative_path={self.relative_path()})'
+        return ''.join(self.lines)
 
     def __repr__(self):
         return f'ProjectFile(relative_path={self.relative_path()})'

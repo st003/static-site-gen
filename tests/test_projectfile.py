@@ -35,9 +35,9 @@ class TestProjectFile(unittest.TestCase):
         """Test get_extention() method."""
         self.assertEqual(self.pf.get_extention(), 'html')
 
-    def test_to_string(self):
+    def test__str__(self):
         """Test to_string() method."""
-        self.assertTrue(isinstance(self.pf.to_string(), str))
+        self.assertTrue(isinstance(str(self.pf), str))
 
     def test_extends_layout(self):
         """Test extends_layout() method."""

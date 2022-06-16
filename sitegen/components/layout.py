@@ -30,9 +30,6 @@ class Layout:
             new_lines.append(line)
         return new_lines
 
-    def __str__(self):
-        return f'Layout(file_name={self.file_name})'
-
     def __repr__(self):
         return f'Layout(file_name={self.file_name})'
 

@@ -27,9 +27,9 @@ class TestSnippet(unittest.TestCase):
         """Test tag_name() method."""
         self.assertEqual(self.snippet.tag_name(), '{{ hello }}')
 
-    def test_to_string(self):
+    def test__str__(self):
         """Test to_string() method."""
-        self.assertTrue(isinstance(self.snippet.to_string(), str))
+        self.assertTrue(isinstance(str(self.snippet), str))
 
     # TODO - integration test for insert()
 
