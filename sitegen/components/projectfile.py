@@ -2,7 +2,7 @@
 import logging
 import os
 
-from config import PROJECT_PATH
+from sitegen.config import PROJECT_PATH
 
 class ProjectFile:
     """Represents a static file to be evaluted, altered, and exported."""

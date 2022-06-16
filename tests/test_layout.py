@@ -6,7 +6,7 @@ Run with: python -m unittest tests.test_layout
 
 import unittest
 
-from components.layout import Layout
+from sitegen.components.layout import Layout
 
 
 class TestLayout(unittest.TestCase):

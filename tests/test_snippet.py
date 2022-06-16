@@ -6,7 +6,7 @@ Run with: python -m unittest tests.test_snippet
 
 import unittest
 
-from components.snippet import Snippet
+from sitegen.components.snippet import Snippet
 
 
 class TestSnippet(unittest.TestCase):

@@ -7,8 +7,8 @@ Run with: python -m unittest tests.test_projectfile
 
 import unittest
 
-from config import PROJECT_PATH
-from components.projectfile import ProjectFile
+from sitegen.config import PROJECT_PATH
+from sitegen.components.projectfile import ProjectFile
 
 
 class TestProjectFile(unittest.TestCase):

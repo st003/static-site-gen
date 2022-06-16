@@ -1,7 +1,7 @@
 """Contains the Snippet class definition."""
 import os
 
-from config import SNIPPETS_PATH
+from sitegen.config import SNIPPETS_PATH
 
 class Snippet:
     """Represents a collection of text to be inserted into a project file."""

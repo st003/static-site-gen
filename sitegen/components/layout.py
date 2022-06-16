@@ -1,7 +1,7 @@
 """Contains the Layout class definition."""
 import os
 
-from config import LAYOUTS_PATH
+from sitegen.config import LAYOUTS_PATH
 
 class Layout:
     """Represents an HTML file to be merged with other project files."""
