@@ -12,10 +12,22 @@ Download a copy of the repository and extract to your file system. A simple exam
 
 ### Usage
 
+To start, create a new project folder by running:
+
+```
+python -m sitegen --new
+```
+
 Run with:
 
 ```
 python -m sitegen
+```
+
+A full list of arguments can be viewed by running:
+
+```
+python -m sitegen --help
 ```
 
 ## Running the tests

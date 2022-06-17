@@ -9,7 +9,7 @@ from sitegen.run import run
 
 def main():
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog='python -m sitegen')
 
     parser.add_argument('-d', '--debug',
                         action='store_true',
