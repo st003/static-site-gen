@@ -16,8 +16,10 @@ class ProjectFile:
         """
         self.path = path
         self.load_file()
-        self.load_layout()
-        self.load_blocks()
+
+        if self.is_html():
+            self.load_layout()
+            self.load_blocks()
 
     def relative_path(self):
         """Returns the relative path for this file from the project root."""
@@ -28,6 +30,12 @@ class ProjectFile:
         parts = self.path.split('.')
         extention = len(parts) - 1
         return parts[extention]
+
+    def is_html(self):
+        """Returns boolean if project file is html."""
+        if self.get_extention() in self.HTML_TYPES:
+            return True
+        return False
 
     def extends_layout(self):
         """Returns a boolean indicating if this ProjectFile extends a layout."""
@@ -63,7 +71,7 @@ class ProjectFile:
 
     def load_blocks(self):
         """Checks for and loads any text blocks."""
-        logging.debug(f'loading Blocks for {self}:')
+        logging.debug(f'loading Blocks for {repr(self)}:')
         self.blocks = []
 
         parsing_block = False

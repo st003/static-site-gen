@@ -8,9 +8,9 @@ from .components.snippet import Snippet
 
 from .config import DIST_PATH, LOG_FORMAT
 
-def run():
+def run(log_level=logging.ERROR):
 
-    LOG_LEVEL = logging.ERROR
+    LOG_LEVEL = log_level
     logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 
     if (os.path.exists(DIST_PATH)):
