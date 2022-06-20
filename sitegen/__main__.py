@@ -2,40 +2,54 @@
 
 import argparse
 import logging
+import traceback
+import sys
 
-from sitegen.new import new_project
-from sitegen.run import run
+from .config import log
+from .new import new_project
+from .run import run
 
 
 def main():
 
-    parser = argparse.ArgumentParser(prog='python -m sitegen')
+    try:
 
-    parser.add_argument('-d', '--debug',
-                        action='store_true',
-                        help='Enables debug output')
+        parser = argparse.ArgumentParser(prog='python -m sitegen')
 
-    parser.add_argument('-n', '--new',
-                        action='store_true',
-                        help='Creates a new project folder')
+        parser.add_argument('-d', '--debug',
+                            action='store_true',
+                            help='Enables debug output')
 
-    parser.add_argument('-v', '--verbose',
-                        action='store_true',
-                        help='Enables verbose output')
+        parser.add_argument('-n', '--new',
+                            action='store_true',
+                            help='Creates a new project folder')
 
-    args = parser.parse_args()
+        parser.add_argument('-v', '--verbose',
+                            action='store_true',
+                            help='Enables verbose output')
 
-    if args.verbose:
-        log_level = logging.INFO
-    elif args.debug:
-        log_level = logging.DEBUG
-    else:
-        log_level = logging.ERROR
+        args = parser.parse_args()
 
-    if args.new:
-        new_project()
-    else:
-        run(log_level=log_level)
+        if args.verbose:
+            log.setLevel(logging.INFO)
+        elif args.debug:
+            log.setLevel(logging.DEBUG)
+        else:
+            # log level defaults to ERROR
+            pass
+
+        if args.new:
+            new_project()
+        else:
+            run()
+
+    except KeyboardInterrupt:
+        log.error('\nProgram exited.')
+        sys.exit(0)
+
+    except Exception:
+        log.error(f'\n{traceback.format_exc()}')
+        sys.exit(1)
 
 
 if __name__ == '__main__':

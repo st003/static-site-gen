@@ -6,32 +6,29 @@ from .components.layout import Layout
 from .components.projectfile import ProjectFile
 from .components.snippet import Snippet
 
-from .config import DIST_PATH, LOG_FORMAT
+from .config import DIST_PATH, log
 
-def run(log_level=logging.ERROR):
-
-    LOG_LEVEL = log_level
-    logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
+def run():
 
     if (os.path.exists(DIST_PATH)):
         shutil.rmtree(DIST_PATH)
     os.mkdir(DIST_PATH)
 
-    logging.info('Loading Layouts...')
+    log.info('Loading Layouts...')
     layouts = Layout.get_all()
-    logging.debug(layouts)
+    log.debug(layouts)
 
-    logging.info('Loading Snippets...')
+    log.info('Loading Snippets...')
     snippets = Snippet.get_all()
-    logging.debug(snippets)
+    log.debug(snippets)
 
-    logging.info('Loading ProjectFiles...')
+    log.info('Loading ProjectFiles...')
     project_files = ProjectFile.load_project_files()
-    logging.debug(project_files)
+    log.debug(project_files)
 
     for pf in project_files:
         if pf.get_extention() in ProjectFile.HTML_TYPES:
-            logging.info(f'Compiling ProjectFile: {pf.relative_path()}')
+            log.info(f'Compiling ProjectFile: {pf.relative_path()}')
             if pf.extends_layout():
                 layout = layouts.get(pf.layout_name)
                 pf.lines = layout.compile(pf)
@@ -45,5 +42,4 @@ def run(log_level=logging.ERROR):
         with open(f'{DIST_PATH}/{pf.relative_path()}', 'w', newline='') as outfile:
             outfile.writelines(pf.lines)
 
-    # TODO - user sys stdout instead?
     print(f'Static site generation complete. Output files exported to: {DIST_PATH}/')

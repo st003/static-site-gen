@@ -1,3 +1,5 @@
+import logging
+
 # path to project source directory
 PROJECT_PATH = 'examples/src'
 
@@ -11,4 +13,10 @@ SNIPPETS_PATH = 'examples/snippets'
 DIST_PATH = 'dist'
 
 # logging
-LOG_FORMAT = '%(levelname)s - %(message)s'
+log_format = logging.Formatter('%(levelname)s - %(message)s')
+log_handler = logging.StreamHandler()
+log_handler.setFormatter(log_format)
+
+log = logging.getLogger('sitegen')
+log.setLevel(logging.ERROR)
+log.addHandler(log_handler)
