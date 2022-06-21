@@ -1,6 +1,6 @@
 # Static Site Generator
 
-A Jinja-inspired Python program for compiling static web files. User defined layouts and snippets allow for dynamically inserting text into HTML pages. Example uses include inserting redundant markup like navigation, CSS, and JavasScript into multiple pages.
+A Jinja-inspired Python program for compiling static web files. User defined layouts and snippets allow for dynamically inserting text into HTML pages. Example uses include inserting redundant markup like navigation, CSS, and JavaScript into multiple pages.
 
 ### Prerequisites
 
@@ -18,13 +18,15 @@ To start, create a new project folder by running:
 python -m sitegen --new
 ```
 
-Place all of your project files and directories in the project/source folder. Run with:
+Place all of your project files and directories in the project/source folder. See the docs for detailed instructions on how to dynamically insert text into project files.
+
+When you are ready to generate your site, run:
 
 ```
 python -m sitegen
 ```
 
-A full list of arguments can be viewed by running:
+The final output will be saved to the dist folder. A full list of optional arguments can be viewed by running:
 
 ```
 python -m sitegen --help
