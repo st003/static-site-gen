@@ -18,7 +18,7 @@ To start, create a new project folder by running:
 python -m sitegen --new
 ```
 
-Run with:
+Place all of your project files and directories in the project/source folder. Run with:
 
 ```
 python -m sitegen
