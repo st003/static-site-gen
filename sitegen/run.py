@@ -3,6 +3,7 @@
 import os
 import shutil
 import sys
+import time
 
 from .components.layout import Layout
 from .components.projectfile import ProjectFile
@@ -21,6 +22,8 @@ def run(use_examples=False):
     if os.path.exists(DIST_PATH):
         shutil.rmtree(DIST_PATH)
     os.mkdir(DIST_PATH)
+
+    start_time = time.perf_counter()
 
     log.info('Loading Layouts...')
     if use_examples:
@@ -61,4 +64,8 @@ def run(use_examples=False):
         with open(f'{DIST_PATH}/{pf.file_name}', 'w', newline='') as outfile:
             outfile.writelines(pf.lines)
 
+    end_time = time.perf_counter()
+    exec_time = round((end_time - start_time), 5)
+
     print(f'\nStatic site generation complete. Output files exported to: {DIST_PATH}/')
+    print(f'Execuion time: {exec_time} seconds')
