@@ -19,5 +19,5 @@ log_handler = logging.StreamHandler()
 log_handler.setFormatter(log_format)
 
 log = logging.getLogger('sitegen')
-log.setLevel(logging.ERROR)
+log.setLevel(logging.WARN)
 log.addHandler(log_handler)

@@ -35,7 +35,7 @@ def main():
         elif args.debug:
             log.setLevel(logging.DEBUG)
         else:
-            # log level defaults to ERROR
+            # log level defaults to WARN
             pass
 
         if args.new:

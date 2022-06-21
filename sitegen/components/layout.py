@@ -43,4 +43,8 @@ class Layout(Component):
         for html_file in os.listdir(path):
             l = Layout(html_file, path=path)
             layouts[l.get_name()] = l
+
+        if not len(layouts):
+            log.warn(f'There are no layouts in {path}')
+
         return layouts

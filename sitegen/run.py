@@ -1,16 +1,20 @@
 import logging
 import os
 import shutil
+import sys
 
 from .components.layout import Layout
 from .components.projectfile import ProjectFile
 from .components.snippet import Snippet
 
-from .config import DIST_PATH, log
+from .config import DIST_PATH, log, PROJECT_PATH
 
 def run():
 
-    if (os.path.exists(DIST_PATH)):
+    if not os.path.exists(PROJECT_PATH):
+        raise FileNotFoundError('Project source directory cannot be located.')
+
+    if os.path.exists(DIST_PATH):
         shutil.rmtree(DIST_PATH)
     os.mkdir(DIST_PATH)
 
@@ -24,6 +28,10 @@ def run():
 
     log.info('Loading ProjectFiles...')
     project_files = ProjectFile.load_project_files()
+    if not len(project_files):
+        log.error(f'There are no files in {PROJECT_PATH}')
+        sys.exit(0)
+
     log.debug(f'Project files: {project_files}')
 
     for pf in project_files:

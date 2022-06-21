@@ -35,10 +35,15 @@ class Snippet(Component):
     @staticmethod
     def get_all(path=SNIPPETS_PATH):
         """Returns a list of all Snippets in the Snippet's directory."""
+
         log.debug(f'Getting snippets from {path}')
 
         snippets = []
         for html_file in os.listdir(path):
             s = Snippet(html_file, path=path)
             snippets.append(s)
+
+        if not len(snippets):
+            log.warn(f'There are no snippets in {path}')
+
         return snippets
