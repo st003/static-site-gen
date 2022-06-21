@@ -7,6 +7,7 @@ Run with: python -m unittest tests.test_snippet
 import unittest
 
 from sitegen.components.snippet import Snippet
+from sitegen.config import EX_SNIPPETS_PATH
 
 
 class TestSnippet(unittest.TestCase):
@@ -15,7 +16,7 @@ class TestSnippet(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Load base layout from examples."""
-        cls.snippet = Snippet('hello.html')
+        cls.snippet = Snippet('hello.html', path=EX_SNIPPETS_PATH)
 
     def test_init(self):
         """Check hello was loaded correctly."""
@@ -35,4 +36,4 @@ class TestSnippet(unittest.TestCase):
 
     def test_get_all(self):
         """Test get_all() method."""
-        self.assertGreater(len(Snippet.get_all()), 0)
+        self.assertGreater(len(Snippet.get_all(path=EX_SNIPPETS_PATH)), 0)

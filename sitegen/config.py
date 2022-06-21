@@ -1,13 +1,14 @@
 import logging
 
-# path to project source directory
-PROJECT_PATH = 'examples/src'
+# project paths
+PROJECT_PATH = 'project/source'
+LAYOUTS_PATH = 'project/layouts'
+SNIPPETS_PATH = 'project/snippets'
 
-# path to project layouts directory
-LAYOUTS_PATH = 'examples/layouts'
-
-# path to project snippets directory
-SNIPPETS_PATH = 'examples/snippets'
+# examples paths
+EX_PROJECT_PATH = 'examples/source'
+EX_LAYOUTS_PATH = 'examples/layouts'
+EX_SNIPPETS_PATH = 'examples/snippets'
 
 # path to distribution directory
 DIST_PATH = 'dist'

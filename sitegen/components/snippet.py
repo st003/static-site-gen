@@ -1,28 +1,22 @@
 """Contains the Snippet class definition."""
 import os
 
-from sitegen.config import SNIPPETS_PATH
+from .component import Component
+from sitegen.config import SNIPPETS_PATH, log
 
-class Snippet:
+class Snippet(Component):
     """Represents a collection of text to be inserted into a project file."""
 
-    def __init__(self, file_name):
+    def __init__(self, file_name, path=SNIPPETS_PATH):
         """Constructs a Snippet instance from file."""
         self.file_name = file_name
+        self.path = path
         self.load_file()
 
     def tag_name(self):
         """Tag for this Snippet as it would appear in a project file."""
         name = self.file_name.split('.')[0]
         return '{{ ' + name + ' }}'
-
-    def load_file(self):
-        """Opens and reads in lines from an HTML file in the snippets directory."""
-        with open(f'{SNIPPETS_PATH}/{self.file_name}', 'r', newline='') as html_file:
-            self.lines = html_file.readlines()
-
-    def __str__(self):
-        return ''.join(self.lines)
 
     def __repr__(self):
         return f'Snippet(file_name={self.file_name})'
@@ -39,10 +33,12 @@ class Snippet:
         return lines
 
     @staticmethod
-    def get_all():
+    def get_all(path=SNIPPETS_PATH):
         """Returns a list of all Snippets in the Snippet's directory."""
+        log.debug(f'Getting snippets from {path}')
+
         snippets = []
-        for html_file in os.listdir(SNIPPETS_PATH):
-            s = Snippet(html_file)
+        for html_file in os.listdir(path):
+            s = Snippet(html_file, path=path)
             snippets.append(s)
         return snippets

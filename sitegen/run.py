@@ -24,11 +24,11 @@ def run():
 
     log.info('Loading ProjectFiles...')
     project_files = ProjectFile.load_project_files()
-    log.debug(project_files)
+    log.debug(f'Project files: {project_files}')
 
     for pf in project_files:
         if pf.get_extention() in ProjectFile.HTML_TYPES:
-            log.info(f'Compiling ProjectFile: {pf.relative_path()}')
+            log.info(f'Compiling ProjectFile: {pf.file_name}')
             if pf.extends_layout():
                 layout = layouts.get(pf.layout_name)
                 pf.lines = layout.compile(pf)
@@ -36,10 +36,10 @@ def run():
             pf.lines = Snippet.insert(pf, snippets)
 
         if (pf.in_sub_dir()):
-            sub_dir = f'{DIST_PATH}/{os.path.dirname(pf.relative_path())}'
+            sub_dir = f'{DIST_PATH}/{os.path.dirname(pf.file_name)}'
             os.makedirs(sub_dir, exist_ok=True)
 
-        with open(f'{DIST_PATH}/{pf.relative_path()}', 'w', newline='') as outfile:
+        with open(f'{DIST_PATH}/{pf.file_name}', 'w', newline='') as outfile:
             outfile.writelines(pf.lines)
 
     print(f'Static site generation complete. Output files exported to: {DIST_PATH}/')
