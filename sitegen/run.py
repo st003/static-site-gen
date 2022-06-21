@@ -45,8 +45,6 @@ def run(use_examples=False):
         log.error(f'There are no files in {PROJECT_PATH}')
         sys.exit(0)
 
-    log.debug(f'Project files: {project_files}')
-
     for pf in project_files:
         if pf.get_extention() in ProjectFile.HTML_TYPES:
             log.info(f'Compiling ProjectFile: {pf.file_name}')

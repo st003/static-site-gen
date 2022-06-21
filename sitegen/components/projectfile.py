@@ -16,6 +16,7 @@ class ProjectFile(Component):
         """
         self.file_name = file_name
         self.path = path
+        log.debug(f'Loading {repr(self)}')
         self.load_file()
 
         if self.is_html():
@@ -63,7 +64,7 @@ class ProjectFile(Component):
 
     def load_blocks(self):
         """Checks for and loads any text blocks."""
-        log.debug(f'loading Blocks for {repr(self)}:')
+        log.debug(f'Loading Blocks for {repr(self)}:')
         self.blocks = []
 
         parsing_block = False
@@ -84,7 +85,7 @@ class ProjectFile(Component):
                 else:
                     b.content += line
 
-        log.debug(self.blocks)
+        log.debug(f'Blocks: {self.blocks}')
 
     def update_relative_paths(self):
         """Checks for any path tags and updates paths to be relative."""
