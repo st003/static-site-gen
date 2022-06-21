@@ -16,17 +16,22 @@ def main():
 
         parser = argparse.ArgumentParser(prog='python -m sitegen')
 
-        parser.add_argument('-d', '--debug',
-                            action='store_true',
-                            help='Enables debug output')
-
         parser.add_argument('-n', '--new',
                             action='store_true',
                             help='Creates a new project folder')
 
+        parser.add_argument('-e', '--example',
+                            action='store_true',
+                            help='Export examples')
+
         parser.add_argument('-v', '--verbose',
                             action='store_true',
                             help='Enables verbose output')
+
+        parser.add_argument('-d', '--debug',
+                            action='store_true',
+                            help='Enables debug output')
+
 
         args = parser.parse_args()
 
@@ -40,6 +45,8 @@ def main():
 
         if args.new:
             new_project()
+        elif args.example:
+            run(use_examples=True)
         else:
             run()
 

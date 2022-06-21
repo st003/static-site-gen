@@ -1,4 +1,5 @@
-import logging
+"""Core static site generation logic."""
+
 import os
 import shutil
 import sys
@@ -7,9 +8,12 @@ from .components.layout import Layout
 from .components.projectfile import ProjectFile
 from .components.snippet import Snippet
 
-from .config import DIST_PATH, log, PROJECT_PATH
+from .config import DIST_PATH, log, PROJECT_PATH, EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
 
-def run():
+def run(use_examples=False):
+
+    if use_examples:
+        print('Generating output using examples...')
 
     if not os.path.exists(PROJECT_PATH):
         raise FileNotFoundError('Project source directory cannot be located.')
@@ -19,15 +23,24 @@ def run():
     os.mkdir(DIST_PATH)
 
     log.info('Loading Layouts...')
-    layouts = Layout.get_all()
+    if use_examples:
+        layouts = Layout.get_all(path=EX_LAYOUTS_PATH)
+    else:
+        layouts = Layout.get_all()
     log.debug(layouts)
 
     log.info('Loading Snippets...')
-    snippets = Snippet.get_all()
+    if use_examples:
+        snippets = Snippet.get_all(path=EX_SNIPPETS_PATH)
+    else:
+        snippets = Snippet.get_all()
     log.debug(snippets)
 
     log.info('Loading ProjectFiles...')
-    project_files = ProjectFile.load_project_files()
+    if use_examples:
+        project_files = ProjectFile.load_project_files(base_path=EX_PROJECT_PATH)
+    else:
+        project_files = ProjectFile.load_project_files()
     if not len(project_files):
         log.error(f'There are no files in {PROJECT_PATH}')
         sys.exit(0)
@@ -50,4 +63,4 @@ def run():
         with open(f'{DIST_PATH}/{pf.file_name}', 'w', newline='') as outfile:
             outfile.writelines(pf.lines)
 
-    print(f'Static site generation complete. Output files exported to: {DIST_PATH}/')
+    print(f'\nStatic site generation complete. Output files exported to: {DIST_PATH}/')
