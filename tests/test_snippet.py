@@ -1,5 +1,5 @@
 """
-Unit tests for Snippet class
+Unit tests for Snippet class. Snippet tests use files in example directory.
 
 Run with: python -m unittest tests.test_snippet
 """
@@ -11,7 +11,6 @@ from sitegen.config import EX_SNIPPETS_PATH
 
 
 class TestSnippet(unittest.TestCase):
-    """Snippet tests use files in example directory."""
 
     @classmethod
     def setUpClass(cls):
@@ -27,10 +26,6 @@ class TestSnippet(unittest.TestCase):
     def test_tag_name(self):
         """Test tag_name() method."""
         self.assertEqual(self.snippet.tag_name(), '{{ hello }}')
-
-    def test__str__(self):
-        """Test to_string() method."""
-        self.assertTrue(isinstance(str(self.snippet), str))
 
     # TODO - integration test for insert()
 

@@ -14,8 +14,7 @@ class ProjectFile(Component):
         Constructs a ProjectFile instance from a file path and configures any
         Layouts and Blocks.
         """
-        self.file_name = file_name
-        self.path = path
+        super().__init__(file_name=file_name, path=path)
         log.debug(f'Loading {repr(self)}')
         self.load_file()
 
@@ -23,35 +22,9 @@ class ProjectFile(Component):
             self.load_layout()
             self.load_blocks()
 
-    def get_extention(self):
-        """Returns the file extention."""
-        parts = self.file_name.split('.')
-        extention = len(parts) - 1
-        return parts[extention]
-
-    def is_html(self):
-        """Returns boolean if project file is html."""
-        if self.get_extention() in self.HTML_TYPES:
-            return True
-        return False
-
     def extends_layout(self):
         """Returns a boolean indicating if this ProjectFile extends a layout."""
         if self.layout_name:
-            return True
-        return False
-
-    def dir_level(self):
-        """
-        Returns an integer representing the ProjectFile location in a directory
-        tree. 0 is the directory root, 1 is a single sub-directory down, etc.
-        """
-        dirs = self.file_name.split('/')
-        return len(dirs) - 1
-
-    def in_sub_dir(self):
-        """Returns a boolean if the ProjectFile resides in a sub-directory."""
-        if self.dir_level() > 0:
             return True
         return False
 
@@ -127,7 +100,6 @@ class ProjectFile(Component):
                 project_files.append(ProjectFile(proj_file_name, path=base_path))
             else:
                 # recursively run the method when a sub-directory is found
-
                 new_sub_path = proj_file if not sub_path else f'{sub_path}/{proj_file}'
                 project_files += cls.load_project_files(base_path=base_path, sub_path=new_sub_path)
 

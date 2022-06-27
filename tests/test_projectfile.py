@@ -1,5 +1,5 @@
 """
-Unit tests for ProjectFile class. ProjectFile tests use files in example
+Unit tests for ProjectFile class. ProjectFile tests use files in examples
 directory.
 
 Run with: python -m unittest tests.test_projectfile
@@ -27,30 +27,9 @@ class TestProjectFile(unittest.TestCase):
         self.assertIsNotNone(self.pf.layout_name)
         self.assertGreater(len(self.pf.blocks), 0)
 
-    def test_get_extention(self):
-        """Test get_extention() method."""
-        self.assertEqual(self.pf.get_extention(), 'html')
-
-    def test__str__(self):
-        """Test to_string() method."""
-        self.assertTrue(isinstance(str(self.pf), str))
-
     def test_extends_layout(self):
         """Test extends_layout() method."""
         self.assertTrue(self.pf.extends_layout())
-
-    def test_dir_level(self):
-        """Test dir_level() method."""
-        sub_page = ProjectFile('subpage/index.html', path=EX_PROJECT_PATH)
-        sub_sub_page = ProjectFile('subpage/subsubpage/index.html', path=EX_PROJECT_PATH)
-
-        self.assertEqual(self.pf.dir_level(), 0)
-        self.assertEqual(sub_page.dir_level(), 1)
-        self.assertEqual(sub_sub_page.dir_level(), 2)
-
-    def test_in_sub_dir(self):
-        """Test in_sub_dir() method."""
-        self.assertFalse(self.pf.in_sub_dir())
 
     # TODO - how to test update_relative_paths()
 

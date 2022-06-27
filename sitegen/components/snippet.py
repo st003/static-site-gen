@@ -9,8 +9,7 @@ class Snippet(Component):
 
     def __init__(self, file_name, path=SNIPPETS_PATH):
         """Constructs a Snippet instance from file."""
-        self.file_name = file_name
-        self.path = path
+        super().__init__(file_name, path=path)
         self.load_file()
 
     def tag_name(self):

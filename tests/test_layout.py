@@ -1,5 +1,5 @@
 """
-Unit tests for Layout class
+Unit tests for Layout class. Layout tests use files in examples directory.
 
 Run with: python -m unittest tests.test_layout
 """
@@ -11,7 +11,6 @@ from sitegen.config import EX_LAYOUTS_PATH
 
 
 class TestLayout(unittest.TestCase):
-    """Layout tests use files in example directory."""
 
     @classmethod
     def setUpClass(cls):
@@ -23,10 +22,6 @@ class TestLayout(unittest.TestCase):
         self.assertIsNotNone(self.layout)
         self.assertEqual(self.layout.file_name, 'base.html')
         self.assertIsNotNone(self.layout.lines)
-
-    def test_get_name(self):
-        """Test get_name() method."""
-        self.assertEqual(self.layout.get_name(), 'base')
 
     # TODO - integration test for compile()
 

@@ -9,7 +9,8 @@ from .components.layout import Layout
 from .components.projectfile import ProjectFile
 from .components.snippet import Snippet
 
-from .config import DIST_PATH, log, PROJECT_PATH, EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
+from .config import log, DIST_PATH, PROJECT_PATH
+from .config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
 
 def run(use_examples=False):
 

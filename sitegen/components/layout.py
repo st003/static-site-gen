@@ -9,13 +9,8 @@ class Layout(Component):
 
     def __init__(self, file_name, path=LAYOUTS_PATH):
         """Constructs a Layout object instance from file."""
-        self.file_name = file_name
-        self.path = path
+        super().__init__(file_name, path=path)
         self.load_file()
-
-    def get_name(self):
-        """Returns the file name without file extention."""
-        return self.file_name.split('.')[0]
 
     def compile(self, html_project_file):
         """Combines a Layout with an HTML project file and returns a new copy."""
