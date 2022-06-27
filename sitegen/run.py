@@ -50,20 +50,14 @@ def run(use_examples=False):
         sys.exit(0)
 
     for pf in project_files:
-        if pf.get_extention() in ProjectFile.HTML_TYPES:
+        if pf.is_html():
             log.info(f'Compiling ProjectFile: {pf.file_name}')
             if pf.extends_layout():
                 layout = layouts.get(pf.layout_name)
                 pf.lines = layout.compile(pf)
-            pf.update_relative_paths()
             pf.lines = Snippet.insert(pf, snippets)
-
-        if (pf.in_sub_dir()):
-            sub_dir = f'{DIST_PATH}/{os.path.dirname(pf.file_name)}'
-            os.makedirs(sub_dir, exist_ok=True)
-
-        with open(f'{DIST_PATH}/{pf.file_name}', 'w', newline='') as outfile:
-            outfile.writelines(pf.lines)
+            pf.update_relative_paths()
+        pf.save_file()
 
     end_time = time.perf_counter()
     exec_time = round((end_time - start_time), 5)

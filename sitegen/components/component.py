@@ -26,9 +26,10 @@ class Component:
         return self.file_name.split('.')[0]
 
     def load_file(self):
-        """Opens and reads in lines from a file in the specified directory."""
-        with open(f'{self.path}/{self.file_name}', 'r', newline='') as text_file:
-            self.lines = text_file.readlines()
+        """Opens and reads in lines from a text file in the specified directory."""
+        if self.is_html():
+            with open(f'{self.path}/{self.file_name}', 'r', newline='') as text_file:
+                self.lines = text_file.readlines()
 
     def in_sub_dir(self):
         """Returns a boolean if the Component resides in a sub-directory."""

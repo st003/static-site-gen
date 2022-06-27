@@ -1,9 +1,10 @@
 """Contains the ProjectFile class definition."""
 
 import os
+import shutil
 
 from .component import Component
-from sitegen.config import PROJECT_PATH, log
+from sitegen.config import log, DIST_PATH, PROJECT_PATH
 
 
 class ProjectFile(Component):
@@ -22,18 +23,13 @@ class ProjectFile(Component):
             self.load_layout()
             self.load_blocks()
 
+
     def extends_layout(self):
         """Returns a boolean indicating if this ProjectFile extends a layout."""
         if self.layout_name:
             return True
         return False
 
-    def load_layout(self):
-        """Checks for and loads the layout name."""
-        if self.lines[0][0:9] == '{% layout':
-            self.layout_name = self.lines[0].removeprefix('{% layout ').strip(' %}\n\r')
-        else:
-            self.layout_name = None
 
     def load_blocks(self):
         """Checks for and loads any text blocks."""
@@ -60,6 +56,32 @@ class ProjectFile(Component):
 
         log.debug(f'Blocks: {self.blocks}')
 
+
+    def load_layout(self):
+        """Checks for and loads the layout name."""
+        if self.lines[0][0:9] == '{% layout':
+            self.layout_name = self.lines[0].removeprefix('{% layout ').strip(' %}\n\r')
+        else:
+            self.layout_name = None
+
+
+    def save_file(self):
+        """Saves file to specificed location."""
+
+        # create sub-directory if needed
+        if (self.in_sub_dir()):
+            sub_dir = f'{DIST_PATH}/{os.path.dirname(self.file_name)}'
+            os.makedirs(sub_dir, exist_ok=True)
+
+        if self.is_html():
+            log.debug(f'Exporting {repr(self)}')
+            with open(f'{DIST_PATH}/{self.file_name}', 'w', newline='') as outfile:
+                outfile.writelines(self.lines)
+        else:
+            log.debug(f'Copying {repr(self)}')
+            shutil.copyfile(f'{PROJECT_PATH}/{self.file_name}', f'{DIST_PATH}/{self.file_name}')
+
+
     def update_relative_paths(self):
         """Checks for any path tags and updates paths to be relative."""
         # TODO - what about multiple path tags in a single line?
@@ -79,8 +101,10 @@ class ProjectFile(Component):
                 rel_path = line.replace(path_tag, raw_path)
                 self.lines[index] = rel_path
 
+
     def __repr__(self):
         return f'ProjectFile(file_name={self.file_name})'
+
 
     @classmethod
     def load_project_files(cls, base_path=PROJECT_PATH, sub_path=''):
@@ -113,12 +137,15 @@ class ProjectFile(Component):
             self.name = None
             self.content = ''
 
+
         def tag_name(self):
             """The tag name as it would appear for this Block."""
             return '{% block ' + self.name + ' %}'
 
+
         def __str__(self):
             return self.content
+
 
         def __repr__(self):
             return f'Block(name={self.name})'
