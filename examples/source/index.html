@@ -1,9 +1,10 @@
 {% layout base %}
 
 {% block title %}
-Example Index Page
+Example Home
 {% endblock %}
 
 {% block main %}
-{{ hello }}
+    <h1>Hello, World!</h1>
+    <p>{{ ipsum }}</p><!-- inserts the snippet called 'ipsum' -->
 {% endblock %}

@@ -15,17 +15,17 @@ class TestSnippet(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Load base layout from examples."""
-        cls.snippet = Snippet('hello.html', path=EX_SNIPPETS_PATH)
+        cls.snippet = Snippet('ipsum.html', path=EX_SNIPPETS_PATH)
 
     def test_init(self):
         """Check hello was loaded correctly."""
         self.assertIsNotNone(self.snippet)
-        self.assertEqual(self.snippet.file_name, 'hello.html')
+        self.assertEqual(self.snippet.file_name, 'ipsum.html')
         self.assertGreater(len(self.snippet.lines), 0)
 
     def test_tag_name(self):
         """Test tag_name() method."""
-        self.assertEqual(self.snippet.tag_name(), '{{ hello }}')
+        self.assertEqual(self.snippet.tag_name(), '{{ ipsum }}')
 
     # TODO - integration test for insert()
 
