@@ -79,7 +79,7 @@ class ProjectFile(Component):
                 outfile.writelines(self.lines)
         else:
             log.debug(f'Copying {repr(self)}')
-            shutil.copyfile(f'{PROJECT_PATH}/{self.file_name}', f'{DIST_PATH}/{self.file_name}')
+            shutil.copyfile(f'{self.path}/{self.file_name}', f'{DIST_PATH}/{self.file_name}')
 
 
     def update_relative_paths(self):

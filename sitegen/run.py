@@ -14,8 +14,8 @@ from .config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
 
 def run(use_examples=False):
 
-    if use_examples:
-        print('Generating output using examples...')
+    src_location = 'examples' if use_examples else PROJECT_PATH
+    print(f'\nGenerating output from: {src_location}')
 
     if not os.path.exists(PROJECT_PATH):
         raise FileNotFoundError('Project source directory cannot be located.')
@@ -49,9 +49,10 @@ def run(use_examples=False):
         log.error(f'There are no files in {PROJECT_PATH}')
         sys.exit(0)
 
+    log.info('Compiling and exporting ProjectFiles...')
     for pf in project_files:
         if pf.is_html():
-            log.info(f'Compiling ProjectFile: {pf.file_name}')
+            log.debug(f'Compiling ProjectFile: {pf.file_name}')
             if pf.extends_layout():
                 layout = layouts.get(pf.layout_name)
                 pf.lines = layout.compile(pf)
@@ -62,5 +63,5 @@ def run(use_examples=False):
     end_time = time.perf_counter()
     exec_time = round((end_time - start_time), 5)
 
-    print(f'\nStatic site generation complete. Output files exported to: {DIST_PATH}/')
-    print(f'Execuion time: {exec_time} seconds')
+    print(f'\nStatic site generation complete. Output files exported to: {DIST_PATH}')
+    print(f'Execution time: {exec_time} seconds\n')
