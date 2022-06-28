@@ -4,7 +4,7 @@ A Jinja-inspired Python program for compiling static web files. User defined lay
 
 ### Prerequisites
 
-Python 3.8+
+Python 3.6+
 
 ### Installing
 
