@@ -84,22 +84,38 @@ class ProjectFile(Component):
 
     def update_relative_paths(self):
         """Checks for any path tags and updates paths to be relative."""
-        # TODO - what about multiple path tags in a single line?
+        log.debug(f'Updating paths for {repr(self)}')
+
         for index, line in enumerate(self.lines):
-            has_path = line.find('{% path')
 
-            if has_path > -1:
-                path_start = has_path + 8
-                path_end = line.find(' %}')
+            current_line = line
+            check_for_paths = True
 
-                raw_path = line[path_start:path_end]
-                path_tag = '{% path ' + raw_path + ' %}'
+            while check_for_paths:
 
-                for i in range(self.dir_level()):
-                    raw_path = f'../{raw_path}'
+                has_path = current_line.find('{% path')
 
-                rel_path = line.replace(path_tag, raw_path)
-                self.lines[index] = rel_path
+                # -1 is the return value of find() when substring is not found
+                if has_path > -1:
+
+                    # raw path should begin 8 chars after the tag start
+                    path_start = has_path + 8
+                    path_end = current_line.find(' %}')
+
+                    raw_path = current_line[path_start:path_end]
+                    path_tag = '{% path ' + raw_path + ' %}'
+                    log.debug(f'found path tag: {path_tag}')
+
+                    for i in range(self.dir_level()):
+                        raw_path = f'../{raw_path}'
+
+                    log.debug(f'Updating path tag: {path_tag}')
+                    current_line = current_line.replace(path_tag, raw_path)
+
+                else:
+                    check_for_paths = False
+
+            self.lines[index] = current_line
 
 
     def __repr__(self):
