@@ -2,12 +2,14 @@
 
 import argparse
 import logging
-import traceback
 import sys
+import traceback
 
 from .config import log
+from .exceptions import TagSyntaxError
 from .new import new_project
 from .run import run
+from .io import clear_dist
 
 
 def main():
@@ -51,11 +53,18 @@ def main():
             run()
 
     except KeyboardInterrupt:
-        log.error('\nProgram exited.')
+        log.error('\nProgram exited.\n')
+        clear_dist()
         sys.exit(0)
 
+    except TagSyntaxError as syntax_error:
+        log.error(f'{syntax_error}\nProgram exited.\n')
+        clear_dist()
+        sys.exit(1)
+
     except Exception:
-        log.error(f'\n{traceback.format_exc()}')
+        log.error(f'\n{traceback.format_exc()}\n')
+        clear_dist()
         sys.exit(1)
 
 

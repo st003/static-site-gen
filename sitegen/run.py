@@ -1,7 +1,6 @@
 """Core static site generation logic."""
 
-import os
-import shutil
+import os.path
 import sys
 import time
 
@@ -11,6 +10,7 @@ from .components.snippet import Snippet
 
 from .config import log, DIST_PATH, PROJECT_PATH
 from .config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
+from .io import clear_dist
 
 def run(use_examples=False):
 
@@ -20,9 +20,7 @@ def run(use_examples=False):
     if not os.path.exists(PROJECT_PATH):
         raise FileNotFoundError('Project source directory cannot be located.')
 
-    if os.path.exists(DIST_PATH):
-        shutil.rmtree(DIST_PATH)
-    os.mkdir(DIST_PATH)
+    clear_dist()
 
     start_time = time.perf_counter()
 

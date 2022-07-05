@@ -31,7 +31,8 @@ class TestProjectFile(unittest.TestCase):
         """Test extends_layout() method."""
         self.assertTrue(self.pf.extends_layout())
 
-    # TODO - how to test update_relative_paths()
+    # TODO - how to test update_relative_paths() for completeness?
+    # TODO - add test for path tag syntax checking
 
     def test_load_project_files(self):
         """Test load_project_files() method."""

@@ -4,6 +4,7 @@ import os
 import shutil
 
 from .component import Component
+from sitegen.exceptions import TagSyntaxError
 from sitegen.config import log, DIST_PATH, PROJECT_PATH
 
 
@@ -93,14 +94,20 @@ class ProjectFile(Component):
 
             while check_for_paths:
 
-                has_path = current_line.find('{% path')
+                tag_start = current_line.find('{% path')
 
                 # -1 is the return value of find() when substring is not found
-                if has_path > -1:
+                if tag_start > -1:
 
                     # raw path should begin 8 chars after the tag start
-                    path_start = has_path + 8
+                    path_start = tag_start + 8
                     path_end = current_line.find(' %}')
+
+                    # when missing closing bracket
+                    if path_end == -1:
+                        # generate preview at least 50 chars of raw path. Str slice already handles out of bounds exceptions
+                        tag_preview = current_line[tag_start:(tag_start + 8 + 50)]
+                        raise TagSyntaxError(f'closing bracket for path tag missing in file: {self.file_name} at:\n\n{tag_preview}...\n')
 
                     raw_path = current_line[path_start:path_end]
                     path_tag = '{% path ' + raw_path + ' %}'
