@@ -52,13 +52,13 @@ There are no limits to the number of blocks a layout may have.
 
 #### Paths
 
-Paths are used to ensure links maintain the correct relative path regardless of folder hierarchy. When defining a URL in a page, layout, or snippet, always use the tag:
+Paths are used to ensure links maintain the correct relative path regardless of folder hierarchy. When defining a URL in a page, layout, or snippet for another file in the project, always use the tag:
 
 ```
 {% path <url> %}
 ```
 
-where url is the full path to the file location from the project source root. During site generation, path tags will be updated with the correct relative paths, either up or down the folder hierarchy.
+where url is the full path to the file location from the project source root. During site generation, path tags will be updated with the correct relative paths, either up or down the folder hierarchy. Do not use the path tag for external urls.
 
 ### Snippets
 
