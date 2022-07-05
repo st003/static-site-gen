@@ -32,6 +32,5 @@ def new_project():
     os.makedirs('project/snippets')
     log.debug('created project/snippets folder')
 
-
     # TODO - add support for custom project folder names?
     print('New project folder called "project" created')
