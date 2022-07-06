@@ -7,6 +7,7 @@ class Component:
         self.file_name = file_name
         self.path = path
 
+
     def dir_level(self):
         """
         Returns an integer representing the Component location in a directory
@@ -15,15 +16,18 @@ class Component:
         dirs = self.file_name.split('/')
         return len(dirs) - 1
 
+
     def get_extention(self):
         """Returns the file extention."""
         parts = self.file_name.split('.')
         extention = len(parts) - 1
         return parts[extention]
 
+
     def get_name(self):
         """Returns the file name without file extention."""
         return self.file_name.split('.')[0]
+
 
     def load_file(self):
         """Opens and reads in lines from a text file in the specified directory."""
@@ -31,17 +35,20 @@ class Component:
             with open(f'{self.path}/{self.file_name}', 'r', newline='') as text_file:
                 self.lines = text_file.readlines()
 
+
     def in_sub_dir(self):
         """Returns a boolean if the Component resides in a sub-directory."""
         if self.dir_level() > 0:
             return True
         return False
 
+
     def is_html(self):
         """Returns boolean if project file is html."""
         if self.get_extention() in self.HTML_TYPES:
             return True
         return False
+
 
     def __str__(self):
         """Returns all lines in file as string."""

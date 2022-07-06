@@ -1,8 +1,10 @@
 """Contains the Layout class definition."""
+
 import os
 
 from .component import Component
 from sitegen.config import LAYOUTS_PATH, log
+
 
 class Layout(Component):
     """Represents an HTML file to be merged with other project files."""
@@ -11,6 +13,7 @@ class Layout(Component):
         """Constructs a Layout object instance from file."""
         super().__init__(file_name, path=path)
         self.load_file()
+
 
     def compile(self, html_project_file):
         """Combines a Layout with an HTML project file and returns a new copy."""
@@ -22,8 +25,10 @@ class Layout(Component):
             new_lines.append(line)
         return new_lines
 
+
     def __repr__(self):
         return f'Layout(file_name={self.file_name})'
+
 
     @staticmethod
     def get_all(path=LAYOUTS_PATH):

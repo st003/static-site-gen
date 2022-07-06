@@ -14,13 +14,16 @@ class Snippet(Component):
         super().__init__(file_name, path=path)
         self.load_file()
 
+
     def tag_name(self):
         """Tag for this Snippet as it would appear in a project file."""
         name = self.file_name.split('.')[0]
         return '{{ ' + name + ' }}'
 
+
     def __repr__(self):
         return f'Snippet(file_name={self.file_name})'
+
 
     @staticmethod
     def insert(html_project_file, snippets):
@@ -32,6 +35,7 @@ class Snippet(Component):
                 line = line.replace(s.tag_name(), str(s))
             lines[index] = line
         return lines
+
 
     @staticmethod
     def get_all(path=SNIPPETS_PATH):
