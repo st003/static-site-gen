@@ -1,8 +1,10 @@
 """Contains the Snippet class definition."""
+
 import os
 
 from .component import Component
 from sitegen.config import SNIPPETS_PATH, log
+
 
 class Snippet(Component):
     """Represents a collection of text to be inserted into a project file."""

@@ -7,7 +7,8 @@ Run with: python -m unittest tests.test_snippet
 import unittest
 
 from sitegen.components.snippet import Snippet
-from sitegen.config import EX_SNIPPETS_PATH
+from sitegen.components.projectfile import ProjectFile
+from sitegen.config import EX_SNIPPETS_PATH, EX_PROJECT_PATH
 
 
 class TestSnippet(unittest.TestCase):
@@ -27,7 +28,13 @@ class TestSnippet(unittest.TestCase):
         """Test tag_name() method."""
         self.assertEqual(self.snippet.tag_name(), '{{ ipsum }}')
 
-    # TODO - integration test for insert()
+    def test_insert(self):
+        """Test insert() method."""
+        pf = ProjectFile('index.html', path=EX_PROJECT_PATH)
+        pf.lines = Snippet.insert(pf, [self.snippet])
+        text_location = str(pf).find('<p>Lorem ipsum')
+        # str.find() returns -1 when match is not found
+        self.assertNotEqual(text_location, -1)
 
     def test_get_all(self):
         """Test get_all() method."""
