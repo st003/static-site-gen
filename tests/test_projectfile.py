@@ -8,7 +8,8 @@ Run with: python -m unittest tests.test_projectfile
 import unittest
 
 from sitegen.components.projectfile import ProjectFile
-from sitegen.config import EX_PROJECT_PATH
+from sitegen.config import EX_PROJECT_PATH, TEST_PATH
+from sitegen.exceptions import TagSyntaxError
 
 
 class TestProjectFile(unittest.TestCase):
@@ -32,7 +33,12 @@ class TestProjectFile(unittest.TestCase):
         self.assertTrue(self.pf.extends_layout())
 
     # TODO - how to test update_relative_paths() for completeness?
-    # TODO - add test for path tag syntax checking
+
+    def test_path_syntax_check(self):
+        """Test path tag syntax checking logic."""
+        syntax_error_file = ProjectFile('path_tag_error.html', path=TEST_PATH)
+        with self.assertRaises(TagSyntaxError):
+            syntax_error_file.update_relative_paths()
 
     def test_load_project_files(self):
         """Test load_project_files() method."""
