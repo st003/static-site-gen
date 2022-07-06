@@ -10,7 +10,7 @@ Python 3.6+
 
 Download a copy of the repository and extract to your file system. A simple example project site can be found in the examples directory. While you can generate sites from the installation root directory, it's recommended to store project folders elsewhere on your file system. To call the program from anywhere, set the installation location in PYTHONPATH.
 
-Linux:
+MacOS/Linux:
 
 ```
 export PYTHONPATH="${PYTHONPATH}:/path/to/program/root/"
