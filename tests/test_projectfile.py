@@ -32,7 +32,13 @@ class TestProjectFile(unittest.TestCase):
         """Test extends_layout() method."""
         self.assertTrue(self.pf.extends_layout())
 
-    # TODO - how to test update_relative_paths() for completeness?
+    def test_update_relative_paths(self):
+        """Test update_relative_paths() method."""
+        sb = ProjectFile('/subpage/subsubpage/index.html', path=EX_PROJECT_PATH)
+        sb.update_relative_paths()
+        rel_path_location = str(sb).find('../../subpage/index.html')
+        # str.find() returns -1 if a match is not located
+        self.assertNotEqual(rel_path_location, -1)
 
     def test_path_syntax_check(self):
         """Test path tag syntax checking logic."""
