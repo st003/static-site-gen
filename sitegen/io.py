@@ -4,11 +4,11 @@ import os
 import os.path
 import shutil
 
-from .config import DIST_PATH
+import sitegen
 
 
 def clear_dist():
     """Create empty dist folder."""
-    if os.path.exists(DIST_PATH):
-        shutil.rmtree(DIST_PATH)
-    os.mkdir(DIST_PATH)
+    if os.path.exists(sitegen.DIST_PATH):
+        shutil.rmtree(sitegen.DIST_PATH)
+    os.mkdir(sitegen.DIST_PATH)

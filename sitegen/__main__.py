@@ -1,10 +1,11 @@
-"""Main entry point for program."""
+"""Main entry point for module."""
 
 import argparse
 import logging
 import sys
 import traceback
 
+import sitegen
 from .config import log
 from .exceptions import TagSyntaxError
 from .new import new_project
@@ -13,6 +14,7 @@ from .io import clear_dist
 
 
 def main():
+    """Main entry point for program."""
 
     try:
 
@@ -22,6 +24,10 @@ def main():
                             action='store_true',
                             help='Creates a new project folder')
 
+        parser.add_argument('-d', '--dist',
+                            default=sitegen.DIST_PATH,
+                            help='Set custom output folder')
+
         parser.add_argument('-e', '--example',
                             action='store_true',
                             help='Export examples')
@@ -30,12 +36,14 @@ def main():
                             action='store_true',
                             help='Enables verbose output')
 
-        parser.add_argument('-d', '--debug',
+        parser.add_argument('--debug',
                             action='store_true',
                             help='Enables debug output')
 
 
         args = parser.parse_args()
+
+        sitegen.DIST_PATH = args.dist
 
         if args.verbose:
             log.setLevel(logging.INFO)

@@ -3,9 +3,10 @@
 import os
 import shutil
 
+import sitegen
 from .component import Component
+from sitegen.config import log, PROJECT_PATH
 from sitegen.exceptions import TagSyntaxError
-from sitegen.config import log, DIST_PATH, PROJECT_PATH
 
 
 class ProjectFile(Component):
@@ -71,16 +72,16 @@ class ProjectFile(Component):
 
         # create sub-directory if needed
         if (self.in_sub_dir()):
-            sub_dir = f'{DIST_PATH}/{os.path.dirname(self.file_name)}'
+            sub_dir = f'{sitegen.DIST_PATH}/{os.path.dirname(self.file_name)}'
             os.makedirs(sub_dir, exist_ok=True)
 
         if self.is_html():
             log.debug(f'Exporting {repr(self)}')
-            with open(f'{DIST_PATH}/{self.file_name}', 'w', newline='') as outfile:
+            with open(f'{sitegen.DIST_PATH}/{self.file_name}', 'w', newline='') as outfile:
                 outfile.writelines(self.lines)
         else:
             log.debug(f'Copying {repr(self)}')
-            shutil.copyfile(f'{self.path}/{self.file_name}', f'{DIST_PATH}/{self.file_name}')
+            shutil.copyfile(f'{self.path}/{self.file_name}', f'{sitegen.DIST_PATH}/{self.file_name}')
 
 
     def update_relative_paths(self):
