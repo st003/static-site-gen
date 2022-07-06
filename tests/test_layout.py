@@ -7,7 +7,8 @@ Run with: python -m unittest tests.test_layout
 import unittest
 
 from sitegen.components.layout import Layout
-from sitegen.config import EX_LAYOUTS_PATH
+from sitegen.components.projectfile import ProjectFile
+from sitegen.config import EX_LAYOUTS_PATH, EX_PROJECT_PATH
 
 
 class TestLayout(unittest.TestCase):
@@ -23,7 +24,13 @@ class TestLayout(unittest.TestCase):
         self.assertEqual(self.layout.file_name, 'base.html')
         self.assertIsNotNone(self.layout.lines)
 
-    # TODO - integration test for compile()
+    def test_compile(self):
+        """Test compile() method."""
+        pf = ProjectFile('index.html', path=EX_PROJECT_PATH)
+        pf.lines = self.layout.compile(pf)
+        layout_tag = str(pf).find('{% layout')
+        # str.find() returns -1 when match is not found
+        self.assertEqual(layout_tag, -1)
 
     def test_get_all(self):
         """Test get_all() method."""
