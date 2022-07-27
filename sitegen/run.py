@@ -44,6 +44,7 @@ def run(use_examples=False):
         project_files = ProjectFile.load_project_files(base_path=EX_PROJECT_PATH)
     else:
         project_files = ProjectFile.load_project_files()
+
     if not len(project_files):
         log.error(f'There are no files in {PROJECT_PATH}')
         sys.exit(0)
