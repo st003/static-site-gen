@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles/doc-styles.css">
+        <title>Static Site Generator - Manual</title>
+    </head>
+    <body>
+        <h1>Static Site Generator - Manual</h1>
+        <p>A Jinja-inspired Python program for compiling static web files. User defined layouts and snippets allow for dynamically inserting text into HTML pages. Example uses include inserting redundant markup like navigation, CSS, and JavaScript into multiple pages.</p>
+
+        <h2>Project Structure</h2>
+        <p>Sites are generated from a folder in the root directory call project. Within this folder are three sub-folders: source, layouts, snippets.</p>
+        <p>A new project folder can be created by running the command:</p>
+        <article>python -m sitegen --new</article>
+
+        <h3>Source</h3>
+        <p>The pages to be compiled into a static site. Arbitrary sub-directory structure is supported and maintained during output. Only files with the extension: .html and .htm will be modified.</p>
+
+        <h3>Layouts</h3>
+        <p>Layouts are used to define common page structures to be used on one or more pages. Example use-cases include: inserting CSS, JavaScript, and other HTML head content, or page navigation, headers, footers, etc.</p>
+        <p>To specify when to use a layout in a page, use the tag:</p>
+        <article>&lbrace;% layout &lt;name&gt; %&rbrace;</article>
+        <p>in the first line of the page, where name is the name of the layout file without the file extension. The layout tag must be used in the first line of the page, else the layout will not be used.
+        </p>
+        <p>A layout file is a simple HTML file located in the layouts folder. Within a layout file, special tags define where text is merged from the page.</p>
+
+        <h3>Blocks</h3>
+        <p>A block is a collection of page text to be merged into the layout at a specific location. In a layout with a common navigation element, this could be content section that is unique to each page.</p>
+        <p>In the layout file, a block is specified with the tag:</p>
+        <article>&lbrace;% block &lt;name&gt; %&rbrace;</article>
+        <p>During site generation, the content to be replaced into the layout block tag is pulled from the text within a set of identically named wrapper tags in the page:</p>
+        <article>
+            <div>&lbrace;% block &lt;name&gt; %&rbrace;</div>
+            <div>Hello, World!</div>
+            <div>&lbrace;% endblock %&rbrace;</div>
+        </article>
+        <p>There are no limits to the number of blocks a layout may have.</p>
+
+        <h4>Paths</h4>
+        <p>Paths are used to ensure links maintain the correct relative path regardless of folder hierarchy. When defining a URL in a page, layout, or snippet for another file in the project, always use the tag:</p>
+        <article>&lbrace;% path &lt;url&gt; %&rbrace;</article>
+        <p>where url is the full path to the file location from the project source root. During site generation, path tags will be updated with the correct relative paths, either up or down the folder hierarchy. Do not use the path tag for external urls.</p>
+
+        <h3>Snippets</h3>
+        <p>Snippets are re-usable text components to be inserted directly into a layout or page. Snippet files are stored in the snippets folder and are specified in a layout or page with the tag:</p>
+        <article>&lbrace;&lbrace; &lt;name&gt; &rbrace;&rbrace;</article>
+        <p>where name is the name of the snippet file without the file extension.</p>
+
+        <h2>Generating Your Site</h2>
+        <p>To generate your final output, run the command:</p>
+        <article>python -m sitegen</article>
+        <p>The program will merge your pages with any applicable layouts, set relative paths, and insert any snippets. The final output will be exported to the dist folder.</p>
+
+        <h2>Example</h2>
+        <p>An example project is included in the examples folder and can be generated for output using the command:</p>
+        <article>python -m sitegen --example</article>
+    </body>
+</html>

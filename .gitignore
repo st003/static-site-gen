@@ -1,4 +1,6 @@
 # Project specific
+!docs/html/dist/*
+!docs/html/project/*
 project/
 TODO.txt
 

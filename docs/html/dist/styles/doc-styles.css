@@ -1,0 +1,14 @@
+html {
+    font-size: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 1rem;
+}
+
+article {
+    padding: 1rem;
+    background-color: #EDEDED;
+}
