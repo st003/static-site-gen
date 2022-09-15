@@ -31,7 +31,7 @@ class Layout(Component):
 
 
     @staticmethod
-    def get_all(path=LAYOUTS_PATH):
+    def get_all(path):
         """
         Returns a dictionary of all Layout files where the key is the layout
         name, and value is the Layout instance.

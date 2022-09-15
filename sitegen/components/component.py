@@ -1,5 +1,5 @@
 class Component:
-    """Super class for defining components"""
+    """Base class for defining components"""
 
     HTML_TYPES = {'html', 'htm'}
 

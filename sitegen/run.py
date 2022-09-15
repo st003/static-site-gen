@@ -5,7 +5,7 @@ import sys
 import time
 
 import sitegen
-from .config import log, PROJECT_PATH
+from .config import log, LAYOUTS_PATH, PROJECT_PATH, SNIPPETS_PATH
 from .config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
 from .components.layout import Layout
 from .components.projectfile import ProjectFile
@@ -15,38 +15,37 @@ from .io import clear_dist
 
 def run(use_examples=False):
 
-    src_location = 'examples' if use_examples else PROJECT_PATH
-    print(f'\nGenerating output from: {src_location}')
+    src_location = PROJECT_PATH
+    layouts_path = LAYOUTS_PATH
+    snippets_path = SNIPPETS_PATH
 
-    if not os.path.exists(PROJECT_PATH):
+    if use_examples:
+        src_location = EX_PROJECT_PATH
+        layouts_path = EX_LAYOUTS_PATH
+        snippets_path = EX_SNIPPETS_PATH
+
+    if not os.path.exists(src_location):
         raise FileNotFoundError('Project source directory cannot be located.')
+
+    print(f'\nGenerating output from: {src_location}')
 
     clear_dist()
 
     start_time = time.perf_counter()
 
     log.info('Loading Layouts...')
-    if use_examples:
-        layouts = Layout.get_all(path=EX_LAYOUTS_PATH)
-    else:
-        layouts = Layout.get_all()
+    layouts = Layout.get_all(path=layouts_path)
     log.debug(layouts)
 
     log.info('Loading Snippets...')
-    if use_examples:
-        snippets = Snippet.get_all(path=EX_SNIPPETS_PATH)
-    else:
-        snippets = Snippet.get_all()
+    snippets = Snippet.get_all(path=snippets_path)
     log.debug(snippets)
 
     log.info('Loading ProjectFiles...')
-    if use_examples:
-        project_files = ProjectFile.load_project_files(base_path=EX_PROJECT_PATH)
-    else:
-        project_files = ProjectFile.load_project_files()
+    project_files = ProjectFile.load_project_files(src_location)
 
     if not len(project_files):
-        log.error(f'There are no files in {PROJECT_PATH}')
+        log.error(f'There are no files in {src_location}')
         sys.exit(0)
 
     log.info('Compiling and exporting ProjectFiles...')

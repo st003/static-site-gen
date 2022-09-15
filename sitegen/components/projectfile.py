@@ -131,7 +131,7 @@ class ProjectFile(Component):
 
 
     @classmethod
-    def load_project_files(cls, base_path=PROJECT_PATH, sub_path=''):
+    def load_project_files(cls, base_path, sub_path=''):
         """
         Scans all directories and sub-directories in the project path, loads
         each file into a ProjectFile instance and returns the collection as
@@ -161,15 +161,12 @@ class ProjectFile(Component):
             self.name = None
             self.content = ''
 
-
         def tag_name(self):
             """The tag name as it would appear for this Block."""
             return '{% block ' + self.name + ' %}'
 
-
         def __str__(self):
             return self.content
-
 
         def __repr__(self):
             return f'Block(name={self.name})'

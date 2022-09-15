@@ -38,7 +38,7 @@ class Snippet(Component):
 
 
     @staticmethod
-    def get_all(path=SNIPPETS_PATH):
+    def get_all(path):
         """Returns a list of all Snippets in the Snippet's directory."""
 
         log.debug(f'Getting snippets from {path}')
