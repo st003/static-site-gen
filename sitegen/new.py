@@ -11,7 +11,7 @@ def new_project():
 
     if (os.path.exists('project')):
         while True:
-            res = input('A project folder already exists. Would you like to delete it? [y/n]: ')
+            res: str = input('A project folder already exists. Would you like to delete it? [y/n]: ')
             if res.lower() == 'y':
                 shutil.rmtree('project')
                 print('Existing project folder deleted.')

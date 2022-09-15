@@ -1,30 +1,30 @@
 class Component:
     """Base class for defining components"""
 
-    HTML_TYPES = {'html', 'htm'}
+    HTML_TYPES: set[str] = {'html', 'htm'}
 
-    def __init__(self, file_name='', path=''):
-        self.file_name = file_name
-        self.path = path
+    def __init__(self, file_name: str ='', path: str =''):
+        self.file_name: str = file_name
+        self.path: str = path
 
 
-    def dir_level(self):
+    def dir_level(self) -> int:
         """
         Returns an integer representing the Component location in a directory
         tree. 0 is the directory root, 1 is a single sub-directory down, etc.
         """
-        dirs = self.file_name.split('/')
+        dirs: list[str] = self.file_name.split('/')
         return len(dirs) - 1
 
 
-    def get_extention(self):
+    def get_extention(self) -> str:
         """Returns the file extention."""
-        parts = self.file_name.split('.')
-        extention = len(parts) - 1
+        parts: list[str] = self.file_name.split('.')
+        extention: int = len(parts) - 1
         return parts[extention]
 
 
-    def get_name(self):
+    def get_name(self) -> str:
         """Returns the file name without file extention."""
         return self.file_name.split('.')[0]
 
@@ -36,20 +36,20 @@ class Component:
                 self.lines = text_file.readlines()
 
 
-    def in_sub_dir(self):
+    def in_sub_dir(self) -> bool:
         """Returns a boolean if the Component resides in a sub-directory."""
         if self.dir_level() > 0:
             return True
         return False
 
 
-    def is_html(self):
+    def is_html(self) -> bool:
         """Returns boolean if project file is html."""
         if self.get_extention() in self.HTML_TYPES:
             return True
         return False
 
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Returns all lines in file as string."""
         return ''.join(self.lines)

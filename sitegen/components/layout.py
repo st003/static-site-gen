@@ -9,15 +9,15 @@ from sitegen.config import LAYOUTS_PATH, log
 class Layout(Component):
     """Represents an HTML file to be merged with other project files."""
 
-    def __init__(self, file_name, path=LAYOUTS_PATH):
+    def __init__(self, file_name: str, path: str = LAYOUTS_PATH):
         """Constructs a Layout object instance from file."""
         super().__init__(file_name, path=path)
         self.load_file()
 
 
-    def compile(self, html_project_file):
+    def compile(self, html_project_file) -> list[str]:
         """Combines a Layout with an HTML project file and returns a new copy."""
-        new_lines = []
+        new_lines: list[str] = []
         for line in self.lines:
             # OPTIMIZE - store blocks in a dict to eliminate nested loops
             for b in html_project_file.blocks:
@@ -26,12 +26,12 @@ class Layout(Component):
         return new_lines
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'Layout(file_name={self.file_name})'
 
 
     @staticmethod
-    def get_all(path):
+    def get_all(path) -> dict:
         """
         Returns a dictionary of all Layout files where the key is the layout
         name, and value is the Layout instance.
@@ -39,9 +39,9 @@ class Layout(Component):
         log.debug(f'Getting layouts from {path}')
 
         # TODO - check for invalid file types?
-        layouts = {}
+        layouts: dict[str, Layout] = {}
         for html_file in os.listdir(path):
-            l = Layout(html_file, path=path)
+            l: Layout = Layout(html_file, path=path)
             layouts[l.get_name()] = l
 
         if not len(layouts):

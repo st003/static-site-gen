@@ -41,9 +41,9 @@ def main():
                             help='Enables debug output')
 
 
-        args = parser.parse_args()
+        args: list[str] = parser.parse_args()
 
-        sitegen.DIST_PATH = args.dist
+        sitegen.DIST_PATH: str = args.dist
 
         if args.verbose:
             log.setLevel(logging.INFO)

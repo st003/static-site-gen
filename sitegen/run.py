@@ -13,11 +13,11 @@ from .components.snippet import Snippet
 from .io import clear_dist
 
 
-def run(use_examples=False):
+def run(use_examples: bool = False):
 
-    src_location = PROJECT_PATH
-    layouts_path = LAYOUTS_PATH
-    snippets_path = SNIPPETS_PATH
+    src_location: str = PROJECT_PATH
+    layouts_path: str = LAYOUTS_PATH
+    snippets_path: str = SNIPPETS_PATH
 
     if use_examples:
         src_location = EX_PROJECT_PATH
@@ -31,18 +31,18 @@ def run(use_examples=False):
 
     clear_dist()
 
-    start_time = time.perf_counter()
+    start_time: float = time.perf_counter()
 
     log.info('Loading Layouts...')
-    layouts = Layout.get_all(path=layouts_path)
+    layouts: dict[str, Layout] = Layout.get_all(path=layouts_path)
     log.debug(layouts)
 
     log.info('Loading Snippets...')
-    snippets = Snippet.get_all(path=snippets_path)
+    snippets: list[Snippet] = Snippet.get_all(path=snippets_path)
     log.debug(snippets)
 
     log.info('Loading ProjectFiles...')
-    project_files = ProjectFile.load_project_files(src_location)
+    project_files: list[ProjectFile] = ProjectFile.load_project_files(src_location)
 
     if not len(project_files):
         log.error(f'There are no files in {src_location}')
@@ -59,8 +59,8 @@ def run(use_examples=False):
             pf.update_relative_paths()
         pf.save_file()
 
-    end_time = time.perf_counter()
-    exec_time = round((end_time - start_time), 5)
+    end_time: float = time.perf_counter()
+    exec_time: float = round((end_time - start_time), 5)
 
     print(f'\nStatic site generation complete. Output files exported to: {sitegen.DIST_PATH}')
     print(f'Execution time: {exec_time} seconds\n')
