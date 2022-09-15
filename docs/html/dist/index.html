@@ -49,7 +49,8 @@
         <h2>Generating Your Site</h2>
         <p>To generate your final output, run the command:</p>
         <article>python -m sitegen</article>
-        <p>The program will merge your pages with any applicable layouts, set relative paths, and insert any snippets. The final output will be exported to the dist folder.</p>
+        <p>The program will merge your pages with any applicable layouts, set relative paths, and insert any snippets. By default, the final output will be saved to the dist folder in your root directory. However, you can set a custom output directory with the --dist flag:</p>
+        <article>python -m sitegen --dist=/path/to/output</article>
 
         <h2>Example</h2>
         <p>An example project is included in the examples folder and can be generated for output using the command:</p>
