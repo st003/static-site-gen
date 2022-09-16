@@ -1,7 +1,10 @@
 """Contains the ProjectFile class definition."""
 
+from __future__ import annotations
+
 import os
 import shutil
+from typing import Optional
 
 import sitegen
 from .component import Component
@@ -12,7 +15,7 @@ from sitegen.exceptions import TagSyntaxError
 class ProjectFile(Component):
     """Represents a static file to be evaluted, altered, and exported."""
 
-    def __init__(self, file_name: str, path: str = PROJECT_PATH):
+    def __init__(self, file_name: str, path: str = PROJECT_PATH) -> None:
         """
         Constructs a ProjectFile instance from a file path and configures any
         Layouts and Blocks.
@@ -33,7 +36,7 @@ class ProjectFile(Component):
         return False
 
 
-    def load_blocks(self):
+    def load_blocks(self) -> None:
         """Checks for and loads any text blocks."""
         log.debug(f'Loading Blocks for {repr(self)}:')
         self.blocks: list[ProjectFile.Block] = []
@@ -45,13 +48,13 @@ class ProjectFile(Component):
 
             if not parsing_block:
                 if line.strip().startswith('{% block'):
-                    parsing_block: bool = True
-                    b.name: str = line.removeprefix('{% block ').strip(' %}\n\r')
+                    parsing_block = True
+                    b.name = line.removeprefix('{% block ').strip(' %}\n\r')
             else:
                 if line.strip() == '{% endblock %}':
-                    b.content: str = b.content.rstrip('\n\r')
+                    b.content = b.content.rstrip('\n\r')
                     self.blocks.append(b)
-                    parsing_block: bool = False
+                    parsing_block = False
                     b = ProjectFile.Block()
                 else:
                     b.content += line
@@ -59,15 +62,15 @@ class ProjectFile(Component):
         log.debug(f'Blocks: {self.blocks}')
 
 
-    def load_layout(self):
+    def load_layout(self) -> None:
         """Checks for and loads the layout name."""
         if self.lines[0][0:9] == '{% layout':
-            self.layout_name = self.lines[0].removeprefix('{% layout ').strip(' %}\n\r')
+            self.layout_name: str = self.lines[0].removeprefix('{% layout ').strip(' %}\n\r')
         else:
-            self.layout_name = None
+            self.layout_name = ''
 
 
-    def save_file(self):
+    def save_file(self) -> None:
         """Saves file to specificed location."""
 
         # create sub-directory if needed
@@ -84,7 +87,7 @@ class ProjectFile(Component):
             shutil.copyfile(f'{self.path}/{self.file_name}', f'{sitegen.DIST_PATH}/{self.file_name}')
 
 
-    def update_relative_paths(self):
+    def update_relative_paths(self) -> None:
         """Checks for any path tags and updates paths to be relative."""
         log.debug(f'Updating paths for {repr(self)}')
 
@@ -131,7 +134,7 @@ class ProjectFile(Component):
 
 
     @classmethod
-    def load_project_files(cls, base_path: str, sub_path: str = '') -> list:
+    def load_project_files(cls, base_path: str, sub_path: str = '') -> list[ProjectFile]:
         """
         Scans all directories and sub-directories in the project path, loads
         each file into a ProjectFile instance and returns the collection as
@@ -157,13 +160,15 @@ class ProjectFile(Component):
     class Block:
         """A section of a ProjectFile to be loaded into a layout."""
 
-        def __init__(self):
-            self.name = None
+        def __init__(self) -> None:
+            self.name: Optional[str] = None
             self.content: str = ''
 
-        def tag_name(self) -> str:
+        def tag_name(self) -> Optional[str]:
             """The tag name as it would appear for this Block."""
-            return '{% block ' + self.name + ' %}'
+            if self.name:
+                return '{% block ' + self.name + ' %}'
+            return None
 
         def __str__(self) -> str:
             return self.content

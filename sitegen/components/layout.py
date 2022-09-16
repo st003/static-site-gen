@@ -1,5 +1,7 @@
 """Contains the Layout class definition."""
 
+from __future__ import annotations
+
 import os
 
 from .component import Component
@@ -9,7 +11,7 @@ from sitegen.config import LAYOUTS_PATH, log
 class Layout(Component):
     """Represents an HTML file to be merged with other project files."""
 
-    def __init__(self, file_name: str, path: str = LAYOUTS_PATH):
+    def __init__(self, file_name: str, path: str = LAYOUTS_PATH) -> None:
         """Constructs a Layout object instance from file."""
         super().__init__(file_name, path=path)
         self.load_file()
@@ -31,7 +33,7 @@ class Layout(Component):
 
 
     @staticmethod
-    def get_all(path) -> dict:
+    def get_all(path) -> dict[str, Layout]:
         """
         Returns a dictionary of all Layout files where the key is the layout
         name, and value is the Layout instance.

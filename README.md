@@ -4,7 +4,7 @@ A Django Templates/Jinja-inspired Python program for compiling static web files.
 
 ### Prerequisites
 
-Python 3.7+
+Python 3.9+
 
 ### Installing
 

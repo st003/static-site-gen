@@ -54,7 +54,8 @@ def run(use_examples: bool = False):
             log.debug(f'Compiling ProjectFile: {pf.file_name}')
             if pf.extends_layout():
                 layout = layouts.get(pf.layout_name)
-                pf.lines = layout.compile(pf)
+                if layout:
+                    pf.lines = layout.compile(pf)
             pf.lines = Snippet.insert(pf, snippets)
             pf.update_relative_paths()
         pf.save_file()

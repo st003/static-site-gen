@@ -6,11 +6,11 @@ import os.path
 install_dir: str = os.path.dirname(__file__).replace('/sitegen', '')
 
 # logging
-log_format = logging.Formatter('%(levelname)s - %(message)s')
-log_handler = logging.StreamHandler()
+log_format: logging.Formatter = logging.Formatter('%(levelname)s - %(message)s')
+log_handler: logging.StreamHandler = logging.StreamHandler()
 log_handler.setFormatter(log_format)
 
-log = logging.getLogger('sitegen')
+log: logging.Logger = logging.getLogger('sitegen')
 log.setLevel(logging.WARN)
 log.addHandler(log_handler)
 

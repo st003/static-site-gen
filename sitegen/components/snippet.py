@@ -1,5 +1,7 @@
 """Contains the Snippet class definition."""
 
+from __future__ import annotations
+
 import os
 
 from .component import Component
@@ -9,7 +11,7 @@ from sitegen.config import SNIPPETS_PATH, log
 class Snippet(Component):
     """Represents a collection of text to be inserted into a project file."""
 
-    def __init__(self, file_name: str, path: str = SNIPPETS_PATH):
+    def __init__(self, file_name: str, path: str = SNIPPETS_PATH) -> None:
         """Constructs a Snippet instance from file."""
         super().__init__(file_name, path=path)
         self.load_file()
@@ -26,19 +28,19 @@ class Snippet(Component):
 
 
     @staticmethod
-    def insert(html_project_file, snippets):
+    def insert(html_project_file, snippets) -> list[str]:
         """Inserts snippets into snippets tags in a project file."""
         lines: list[str] = html_project_file.lines
         for index, line in enumerate(lines):
             # OPTIMIZE - store blocks in a dict to eliminiate nested loops
             for s in snippets:
-                line: str = line.replace(s.tag_name(), str(s))
+                line = line.replace(s.tag_name(), str(s))
             lines[index] = line
         return lines
 
 
     @staticmethod
-    def get_all(path) -> list:
+    def get_all(path) -> list[Snippet]:
         """Returns a list of all Snippets in the Snippet's directory."""
 
         log.debug(f'Getting snippets from {path}')
