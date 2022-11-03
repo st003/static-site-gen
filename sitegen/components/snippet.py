@@ -28,7 +28,7 @@ class Snippet(Component):
 
 
     @staticmethod
-    def insert(html_project_file, snippets) -> list[str]:
+    def insert(html_project_file, snippets: list) -> list[str]:
         """Inserts snippets into snippets tags in a project file."""
         lines: list[str] = html_project_file.lines
         for index, line in enumerate(lines):
@@ -40,7 +40,7 @@ class Snippet(Component):
 
 
     @staticmethod
-    def get_all(path) -> list[Snippet]:
+    def get_all(path: str) -> list[Snippet]:
         """Returns a list of all Snippets in the Snippet's directory."""
 
         log.debug(f'Getting snippets from {path}')

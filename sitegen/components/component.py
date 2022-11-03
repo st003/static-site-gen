@@ -3,7 +3,7 @@ class Component:
 
     HTML_TYPES: set[str] = {'html', 'htm'}
 
-    def __init__(self, file_name: str ='', path: str ='') -> None:
+    def __init__(self, file_name: str = '', path: str = '') -> None:
         self.file_name: str = file_name
         self.path: str = path
 
