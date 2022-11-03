@@ -14,6 +14,9 @@ log: logging.Logger = logging.getLogger('sitegen')
 log.setLevel(logging.WARN)
 log.addHandler(log_handler)
 
+# file extentions
+LAYOUT_EXTENSIONS: set = set(['html', 'htm'])
+
 # project paths
 PROJECT_PATH: str = 'project/source'
 LAYOUTS_PATH: str = 'project/layouts'

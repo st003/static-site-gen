@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 
 from .component import Component
-from sitegen.config import LAYOUTS_PATH, log
+from sitegen.config import LAYOUT_EXTENSIONS, LAYOUTS_PATH, log
 
 
 class Layout(Component):
@@ -40,11 +40,13 @@ class Layout(Component):
         """
         log.debug(f'Getting layouts from {path}')
 
-        # TODO - check for invalid file types?
         layouts: dict[str, Layout] = {}
         for html_file in os.listdir(path):
-            l: Layout = Layout(html_file, path=path)
-            layouts[l.get_name()] = l
+
+            file_ext: str = html_file.split('.')[-1]
+            if file_ext in LAYOUT_EXTENSIONS:
+                l: Layout = Layout(html_file, path=path)
+                layouts[l.get_name()] = l
 
         if not len(layouts):
             log.warn(f'There are no layouts in {path}')
