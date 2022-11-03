@@ -32,7 +32,7 @@ A layout file is a simple HTML file located in the layouts folder. Within a layo
 
 #### Blocks
 
-A block is a collection of page text to be merged into the layout at a specific location. In a layout with a common navigation element, this could be content section that is unique to each page.
+A block is a section of page text to be merged into the layout at a specific location. For example, in a layout with a common navigation element, this could be the content section that is unique to each page.
 
 In the layout file, a block is specified with the tag:
 
@@ -40,7 +40,7 @@ In the layout file, a block is specified with the tag:
 {% block <name> %}
 ```
 
-During site generation, the content to be replaced into the layout block tag is pulled from the text within a set of identically named wrapper tags in the page:
+Where name is the user defined name of the block. During site generation, the page content to be merged into a layout's block tag(s) is pulled from the text wrapped by a similarly named block start and end tag:
 
 ```
 {% block <name> %}

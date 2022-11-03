@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import os
 
-from .component import Component
 from sitegen.config import LAYOUT_EXTENSIONS, LAYOUTS_PATH, log
+from sitegen.components.component import Component
+from sitegen.components.projectfile import ProjectFile
 
 
 class Layout(Component):
@@ -17,13 +18,16 @@ class Layout(Component):
         self.load_file()
 
 
-    def compile(self, html_project_file) -> list[str]:
-        """Combines a Layout with an HTML project file and returns a new copy."""
+    def compile(self, html_project_file: ProjectFile) -> list[str]:
+        """
+        Combines a Layout with an HTML project file and returns the updated
+        lines in a list.
+        """
+
         new_lines: list[str] = []
         for line in self.lines:
-            # OPTIMIZE - store blocks in a dict to eliminate nested loops
-            for b in html_project_file.blocks:
-                line = line.replace(b.tag_name(), b.content)
+            for block in html_project_file.blocks:
+                line = line.replace(block.tag_name(), block.content)
             new_lines.append(line)
         return new_lines
 

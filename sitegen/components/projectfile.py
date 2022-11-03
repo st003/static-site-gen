@@ -39,25 +39,27 @@ class ProjectFile(Component):
     def load_blocks(self) -> None:
         """Checks for and loads any text blocks."""
         log.debug(f'Loading Blocks for {repr(self)}:')
-        self.blocks: list[ProjectFile.Block] = []
 
+        self.blocks: list[ProjectFile.Block] = []
         parsing_block: bool = False
-        b: ProjectFile.Block = ProjectFile.Block()
+        block: Optional[ProjectFile.Block] = None
 
         for line in self.lines:
 
             if not parsing_block:
                 if line.strip().startswith('{% block'):
                     parsing_block = True
-                    b.name = line.removeprefix('{% block ').strip(' %}\n\r')
+                    name: str = line.removeprefix('{% block ').strip(' %}\n\r')
+                    block = ProjectFile.Block(name)
             else:
-                if line.strip() == '{% endblock %}':
-                    b.content = b.content.rstrip('\n\r')
-                    self.blocks.append(b)
-                    parsing_block = False
-                    b = ProjectFile.Block()
-                else:
-                    b.content += line
+                if block is not None:
+                    if line.strip() == '{% endblock %}':
+                        block.content = block.content.rstrip('\n\r')
+                        self.blocks.append(block)
+                        parsing_block = False
+                        block = None
+                    else:
+                        block.content += line
 
         log.debug(f'Blocks: {self.blocks}')
 
@@ -160,15 +162,13 @@ class ProjectFile(Component):
     class Block:
         """A section of a ProjectFile to be loaded into a layout."""
 
-        def __init__(self) -> None:
-            self.name: Optional[str] = None
+        def __init__(self, name: str) -> None:
+            self.name: str = name
             self.content: str = ''
 
-        def tag_name(self) -> Optional[str]:
+        def tag_name(self) -> str:
             """The tag name as it would appear for this Block."""
-            if self.name:
-                return '{% block ' + self.name + ' %}'
-            return None
+            return '{% block ' + self.name + ' %}'
 
         def __str__(self) -> str:
             return self.content
