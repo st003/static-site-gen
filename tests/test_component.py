@@ -10,7 +10,7 @@ from sitegen.components.component import Component
 from sitegen.config import EX_PROJECT_PATH
 
 
-class TestLayout(unittest.TestCase):
+class TestComponent(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
