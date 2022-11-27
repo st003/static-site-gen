@@ -1,7 +1,7 @@
 """
 A minifier for HTML, CSS, and JavaScript.
 
-Question: Why build your own when superior minifier already exist?
+Question: Why build your own when superior minifiers already exist?
 Answer: The goal is to have a self-contained program with no external dependencies
 """
 
