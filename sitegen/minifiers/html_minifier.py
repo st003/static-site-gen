@@ -54,6 +54,7 @@ def minify_html(file_text: str) -> Generator[str, None, None]:
 
             # check for closing html bracket. ie: "</h1>"
             if html_close_flag and html_tag_end_bracket.match(char):
+                # TODO - Fix this logic to catch spaces trailing "</". Ex: "</a> "
                 html_flag = False
                 html_close_flag = False
 
