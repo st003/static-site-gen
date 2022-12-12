@@ -10,41 +10,19 @@ import re
 from typing import Generator, Pattern
 
 # regex patterns
+non_space_whitespace_symbols: Pattern = re.compile(r'\t|\n|\r|\f|\v')
 html_tag_start_bracket: Pattern = re.compile(r'<')
-html_tag_close_start_bracket: Pattern = re.compile(r'</')
-html_tag_end_bracket: Pattern = re.compile(r'>')
-html_whitespace: Pattern = re.compile(r'\t|\n|\r|\f|\v')
-non_html_padding: Pattern = re.compile(r'\n ')
-non_html_whitespace: Pattern = re.compile(r'\s')
 html_comment_start: Pattern = re.compile(r'<!--')
 html_comment_end: Pattern = re.compile(r'-->')
 
 # flags
 html_flag: bool = False
-html_padding_flag: bool = False
-html_close_flag: bool = False
 comment_flag: bool = False
-
-
-def reset_html_minifier_flags() -> None:
-    """Set global html minifier flags to False."""
-
-    global html_flag
-    global html_padding_flag
-    global html_close_flag
-    global comment_flag
-
-    html_flag = False
-    html_padding_flag = False
-    html_close_flag = False
-    comment_flag = False
 
 
 def minify_html(file_text: str) -> Generator[str, None, None]:
 
     global html_flag
-    global html_padding_flag
-    global html_close_flag
     global comment_flag
 
     for pos, char in enumerate(file_text):
@@ -52,30 +30,21 @@ def minify_html(file_text: str) -> Generator[str, None, None]:
         # html
         if html_flag:
 
-            # check for closing html bracket. ie: "</h1>"
-            if html_close_flag and html_tag_end_bracket.match(char):
-                # TODO - Fix this logic to catch spaces trailing "</". Ex: "</a> "
-                html_flag = False
-                html_close_flag = False
-
-            # check for closing html bracket start. ie: "</"
-            elif html_tag_close_start_bracket.match(file_text[pos:(pos + 2)]):
-                html_close_flag = True
-
-            # check for indentation using spaces
-            elif non_html_padding.match(file_text[pos:(pos + 2)]):
-                html_padding_flag = True
+            if non_space_whitespace_symbols.match(char):
                 continue
 
-            # evalutate indentation spaces
-            elif html_padding_flag:
-                if non_html_whitespace.match(char):
-                    continue
-                else:
-                    html_padding_flag = False
+            # evaluate spaces
+            elif char == ' ':
 
-            else:
-                if html_whitespace.match(char):
+                # TODO - deal with "<div> <p>" vs. "<p>link: <a>asdsad</a></p>"
+                # seems like I need a flag for "> + char + space"
+
+                # TODO - replace string compares with regex matches
+
+                this_and_next: str = file_text[pos:pos + 2]
+                if this_and_next == '  ':
+                    continue
+                elif this_and_next == ' <':
                     continue
 
         else:
@@ -83,9 +52,11 @@ def minify_html(file_text: str) -> Generator[str, None, None]:
             if html_tag_start_bracket.match(char):
                 html_flag = True
 
-            else:
-                if non_html_whitespace.match(char):
-                    continue
+            elif char == ' ':
+                continue
+
+        # TODO - inline css
+        # TODO - inline javascript
 
         # comments
         if comment_flag:
@@ -108,9 +79,10 @@ def minify_html(file_text: str) -> Generator[str, None, None]:
                 comment_flag = True
                 continue
 
-        # TODO - inline css
-        # TODO - inline javascript
-
         yield char
+
+    # reset flags to initial state
+    html_flag = False
+    comment_flag = False
 
     return None
