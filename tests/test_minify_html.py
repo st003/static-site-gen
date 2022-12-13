@@ -73,14 +73,14 @@ class TestHTMLMinifier(unittest.TestCase):
     def test_spaces_between_tags(self):
         """Spaces between tags."""
 
-        spaces = '<div>   </div>'
+        spaces = '<div>   <p></p></div>'
         minifed_text = []
 
         for char in minify_html(spaces):
             minifed_text.append(char)
 
         minified_str = ''.join(minifed_text)
-        self.assertEqual(minified_str, '<div></div>')
+        self.assertEqual(minified_str, '<div><p></p></div>')
 
     def test_html_tags_with_valid_spaces(self):
         """Inline spaces nested within html tags."""
@@ -93,6 +93,18 @@ class TestHTMLMinifier(unittest.TestCase):
 
         minified_str = ''.join(minifed_text)
         self.assertEqual(minified_str, '<div><p>Here is a <a>link</a> to click</p></div>')
+
+    def test_attributes(self):
+        """Test html attributes."""
+
+        attributes = '<html lang="en"></html>'
+        minifed_text = []
+
+        for char in minify_html(attributes):
+            minifed_text.append(char)
+
+        minified_str = ''.join(minifed_text)
+        self.assertEqual(minified_str, '<html lang="en"></html>')
 
     def test_comment(self):
         """String with only comments."""
@@ -109,11 +121,28 @@ class TestHTMLMinifier(unittest.TestCase):
     def test_inline_comment(self):
         """String with mix of comments and non-comments."""
 
-        comment = '<pre> <!-- comment --> </post>'
+        comment = '<p>paragraph <!-- comment--> with a comment inside</p>'
         minifed_text = []
 
         for char in minify_html(comment):
             minifed_text.append(char)
 
         minified_str = ''.join(minifed_text)
-        self.assertEqual(minified_str, '<pre></post>')
+        self.assertEqual(minified_str, '<p>paragraph with a comment inside</p>')
+
+    def test_html_only(self):
+        """A complex html file."""
+
+        with open('tests/html_minify_source.html') as html_file:
+            html = html_file.read()
+
+        with open('tests/html_minify_expected.html') as html_file:
+            expected = html_file.read()
+
+        minified_text = []
+        for char in minify_html(html):
+            minified_text.append(char)
+
+        minified_str = ''.join(minified_text)
+
+        self.assertEqual(minified_str, expected)
