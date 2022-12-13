@@ -10,20 +10,29 @@ import re
 from typing import Generator, Pattern
 
 # regex patterns
+space: Pattern = re.compile(r' ')
+double_space: Pattern = re.compile(r'  ')
+space_before_tag: Pattern = re.compile(r' <')
 non_space_whitespace_symbols: Pattern = re.compile(r'\t|\n|\r|\f|\v')
-html_tag_start_bracket: Pattern = re.compile(r'<')
+all_whitespace_symbols: Pattern = re.compile(r' |\t|\n|\r|\f|\v')
+html_tag_left_bracket: Pattern = re.compile(r'<')
+html_tag_right_bracket: Pattern = re.compile(r'>')
 html_comment_start: Pattern = re.compile(r'<!--')
 html_comment_end: Pattern = re.compile(r'-->')
 
 # flags
 html_flag: bool = False
 comment_flag: bool = False
+tag_bracket_right: bool = False
+potential_inline_tag: bool = False
 
 
 def minify_html(file_text: str) -> Generator[str, None, None]:
 
     global html_flag
     global comment_flag
+    global tag_bracket_right
+    global potential_inline_tag
 
     for pos, char in enumerate(file_text):
 
@@ -34,25 +43,35 @@ def minify_html(file_text: str) -> Generator[str, None, None]:
                 continue
 
             # evaluate spaces
-            elif char == ' ':
+            elif space.match(char):
+                next_two_chars: str = file_text[pos:pos + 2]
 
-                # TODO - deal with "<div> <p>" vs. "<p>link: <a>asdsad</a></p>"
-                # seems like I need a flag for "> + char + space"
-
-                # TODO - replace string compares with regex matches
-
-                this_and_next: str = file_text[pos:pos + 2]
-                if this_and_next == '  ':
+                # elminate extra spaces
+                if double_space.match(next_two_chars):
                     continue
-                elif this_and_next == ' <':
+
+                # evalute spaces before tags
+                elif space_before_tag.match(next_two_chars) and not potential_inline_tag:
                     continue
+
+            # check for html tag brackets
+            elif html_tag_right_bracket.match(char):
+                tag_bracket_right = True
+
+            elif html_tag_left_bracket.match(char):
+                tag_bracket_right = False
+                potential_inline_tag = False
+
+            # check for guaranteed yields following an html tag
+            elif tag_bracket_right:
+                potential_inline_tag = True
 
         else:
 
-            if html_tag_start_bracket.match(char):
+            if html_tag_left_bracket.match(char):
                 html_flag = True
 
-            elif char == ' ':
+            elif all_whitespace_symbols.match(char):
                 continue
 
         # TODO - inline css
@@ -84,5 +103,7 @@ def minify_html(file_text: str) -> Generator[str, None, None]:
     # reset flags to initial state
     html_flag = False
     comment_flag = False
+    tag_bracket_right = False
+    potential_inline_tag = False
 
     return None

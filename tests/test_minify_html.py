@@ -49,26 +49,38 @@ class TestHTMLMinifier(unittest.TestCase):
     def test_neighboring_spaces(self):
         """String with neighboring spaces."""
 
-        carriage_return = '<h1>Hello,     World!</h1>'
+        neighboring_spaces = '<h1>Hello,     World!</h1>'
         minifed_text = []
 
-        for char in minify_html(carriage_return):
+        for char in minify_html(neighboring_spaces):
             minifed_text.append(char)
 
         minified_str = ''.join(minifed_text)
         self.assertEqual(minified_str, '<h1>Hello, World!</h1>')
 
-    def test_leading_spaces(self):
-        """String with leading spaces."""
+    def test_leading_whitespace(self):
+        """String with leading whitespace."""
 
-        carriage_return = '    <!DOCTYPE html>'
+        leading_whitespace = ' \t\n\r\f\v<!DOCTYPE html>'
         minifed_text = []
 
-        for char in minify_html(carriage_return):
+        for char in minify_html(leading_whitespace):
             minifed_text.append(char)
 
         minified_str = ''.join(minifed_text)
         self.assertEqual(minified_str, '<!DOCTYPE html>')
+
+    def test_spaces_between_tags(self):
+        """Spaces between tags."""
+
+        spaces = '<div>   </div>'
+        minifed_text = []
+
+        for char in minify_html(spaces):
+            minifed_text.append(char)
+
+        minified_str = ''.join(minifed_text)
+        self.assertEqual(minified_str, '<div></div>')
 
     def test_html_tags_with_valid_spaces(self):
         """Inline spaces nested within html tags."""
@@ -94,10 +106,10 @@ class TestHTMLMinifier(unittest.TestCase):
         minified_str = ''.join(minifed_text)
         self.assertEqual(len(minified_str), 0)
 
-    def test_comment_with_text(self):
+    def test_inline_comment(self):
         """String with mix of comments and non-comments."""
 
-        comment = '<pre><!-- comment --></post>'
+        comment = '<pre> <!-- comment --> </post>'
         minifed_text = []
 
         for char in minify_html(comment):
