@@ -7,7 +7,7 @@ import traceback
 
 import sitegen
 from .config import log
-from .exceptions import TagSyntaxError
+from sitegen.exceptions import ProjectHierarchyError, TagSyntaxError
 from .new import new_project
 from .run import run
 from .io import clear_dist
@@ -65,7 +65,7 @@ def main():
         clear_dist()
         sys.exit(0)
 
-    except FileNotFoundError as error:
+    except ProjectHierarchyError as error:
         log.error(f'{error}\nProgram exited.\n')
         clear_dist()
         sys.exit(1)
