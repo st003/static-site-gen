@@ -65,6 +65,11 @@ def main():
         clear_dist()
         sys.exit(0)
 
+    except FileNotFoundError as error:
+        log.error(f'{error}\nProgram exited.\n')
+        clear_dist()
+        sys.exit(1)
+
     except TagSyntaxError as syntax_error:
         log.error(f'{syntax_error}\nProgram exited.\n')
         clear_dist()

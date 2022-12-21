@@ -13,7 +13,7 @@ Download a copy of the repository and extract to your file system. A simple exam
 MacOS/Linux:
 
 ```
-export PYTHONPATH="${PYTHONPATH}:/path/to/program/root/"
+export PYTHONPATH="${PYTHONPATH}:/path/to/repo/root/"
 ```
 
 ### Usage
