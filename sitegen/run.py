@@ -10,6 +10,7 @@ from .config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
 from .components.layout import Layout
 from .components.projectfile import ProjectFile
 from .components.snippet import Snippet
+from sitegen.exceptions import ProjectHierarchyError
 from .io import clear_dist
 
 
@@ -25,7 +26,7 @@ def run(use_examples: bool = False):
         snippets_path = EX_SNIPPETS_PATH
 
     if not os.path.exists(src_location):
-        raise FileNotFoundError('Project source directory cannot be located.')
+        raise ProjectHierarchyError('Project source directory cannot be located.')
 
     print(f'\nGenerating output from: {src_location}')
 

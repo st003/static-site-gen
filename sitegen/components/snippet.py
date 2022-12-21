@@ -47,11 +47,16 @@ class Snippet(Component):
         log.debug(f'Getting snippets from {path}')
 
         snippets: list[Snippet] = []
-        for html_file in os.listdir(path):
-            snippet: Snippet = Snippet(html_file, path=path)
-            snippets.append(snippet)
 
-        if not len(snippets):
-            log.warn(f'There are no snippets in {path}')
+        if os.path.exists(path):
+            for html_file in os.listdir(path):
+                snippet: Snippet = Snippet(html_file, path=path)
+                snippets.append(snippet)
+
+            if not len(snippets):
+                log.warn(f'There are no snippets in {path}')
+
+        else:
+            log.warn('Snippets directory does not exist')
 
         return snippets
