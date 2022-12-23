@@ -121,14 +121,14 @@ class TestHTMLMinifier(unittest.TestCase):
     def test_inline_comment(self):
         """String with mix of comments and non-comments."""
 
-        comment = '<p>paragraph <!-- comment--> with a comment inside</p>'
+        comment = '<body>\n    <!-- comment -->\n    <h1>Hello, World!</h1>'
         minifed_text = []
 
         for char in minify_html(comment):
             minifed_text.append(char)
 
         minified_str = ''.join(minifed_text)
-        self.assertEqual(minified_str, '<p>paragraph with a comment inside</p>')
+        self.assertEqual(minified_str, '<body><h1>Hello, World!</h1>')
 
     def test_html_only(self):
         """A complex html file."""
