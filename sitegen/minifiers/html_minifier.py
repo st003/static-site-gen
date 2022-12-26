@@ -90,6 +90,7 @@ def minify_html(file_text: str) -> Generator[str, None, None]:
         elif tag_bracket_right:
             potential_inline_tag = True
 
+        # TODO - <pre> support
         # TODO - inline css
         # TODO - inline javascript
 
