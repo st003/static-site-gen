@@ -4,14 +4,14 @@ import os.path
 import sys
 import time
 
-import sitegen
-from .config import log, LAYOUTS_PATH, PROJECT_PATH, SNIPPETS_PATH
-from .config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
-from .components.layout import Layout
-from .components.projectfile import ProjectFile
-from .components.snippet import Snippet
+from sitegen import DIST_PATH
+from sitegen.config import log, LAYOUTS_PATH, PROJECT_PATH, SNIPPETS_PATH
+from sitegen.config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
+from sitegen.components.layout import Layout
+from sitegen.components.projectfile import ProjectFile
+from sitegen.components.snippet import Snippet
 from sitegen.exceptions import ProjectHierarchyError
-from .io import clear_dist
+from sitegen.io import clear_dist
 
 
 def run(use_examples: bool = False):
@@ -64,5 +64,5 @@ def run(use_examples: bool = False):
     end_time: float = time.perf_counter()
     exec_time: float = round((end_time - start_time), 5)
 
-    print(f'\nStatic site generation complete. Output files exported to: {sitegen.DIST_PATH}')
+    print(f'\nStatic site generation complete. Output files exported to: {DIST_PATH}')
     print(f'Execution time: {exec_time} seconds\n')
