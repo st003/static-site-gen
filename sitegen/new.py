@@ -4,7 +4,7 @@ import os
 import shutil
 import sys
 
-from .config import log
+from sitegen.config import log
 
 
 def new_project():

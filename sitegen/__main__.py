@@ -6,11 +6,11 @@ import sys
 import traceback
 
 import sitegen
-from .config import log
+from sitegen.config import log
 from sitegen.exceptions import ProjectHierarchyError, TagSyntaxError
-from .new import new_project
-from .run import run
-from .io import clear_dist
+from sitegen.new import new_project
+from sitegen.run import run
+from sitegen.io import clear_dist
 
 
 def main():
@@ -43,7 +43,7 @@ def main():
 
         args: list[str] = parser.parse_args()
 
-        sitegen.DIST_PATH: str = args.dist
+        sitegen.DIST_PATH = args.dist
 
         if args.verbose:
             log.setLevel(logging.INFO)

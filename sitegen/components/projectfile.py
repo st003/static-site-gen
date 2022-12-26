@@ -7,7 +7,7 @@ import shutil
 from typing import Optional
 
 import sitegen
-from .component import Component
+from sitegen.components.component import Component
 from sitegen.config import log, PROJECT_PATH
 from sitegen.exceptions import TagSyntaxError
 
