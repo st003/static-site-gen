@@ -4,6 +4,7 @@ import argparse
 import logging
 import sys
 import traceback
+from argparse import Namespace
 
 import sitegen
 from sitegen.config import log
@@ -41,7 +42,7 @@ def main():
                             help='Enables debug output')
 
 
-        args: list[str] = parser.parse_args()
+        args: Namespace = parser.parse_args()
 
         sitegen.DIST_PATH = args.dist
 
