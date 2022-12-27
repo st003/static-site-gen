@@ -14,13 +14,10 @@ from sitegen.exceptions import TagSyntaxError
 
 class TestProjectFile(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        """Load index file from examples/source."""
-        cls.pf = ProjectFile('index.html', path=EX_PROJECT_PATH)
-        cls.block = cls.pf.blocks[0]
+    pf: ProjectFile = ProjectFile('index.html', path=EX_PROJECT_PATH)
+    block: ProjectFile.Block = pf.blocks[0]
 
-    def test_init(self):
+    def test_init(self) -> None:
         """Check base was loaded correctly."""
         self.assertIsNotNone(self.pf)
         self.assertEqual(self.pf.file_name, 'index.html')
@@ -28,29 +25,29 @@ class TestProjectFile(unittest.TestCase):
         self.assertIsNotNone(self.pf.layout_name)
         self.assertGreater(len(self.pf.blocks), 0)
 
-    def test_extends_layout(self):
+    def test_extends_layout(self) -> None:
         """Test extends_layout() method."""
         self.assertTrue(self.pf.extends_layout())
 
-    def test_update_relative_paths(self):
+    def test_update_relative_paths(self) -> None:
         """Test update_relative_paths() method."""
-        sb = ProjectFile('/subpage/subsubpage/index.html', path=EX_PROJECT_PATH)
+        sb: ProjectFile = ProjectFile('/subpage/subsubpage/index.html', path=EX_PROJECT_PATH)
         sb.update_relative_paths()
-        rel_path_location = str(sb).find('../../subpage/index.html')
+        rel_path_location: int = str(sb).find('../../subpage/index.html')
         # str.find() returns -1 if a match is not located
         self.assertNotEqual(rel_path_location, -1)
 
-    def test_path_syntax_check(self):
+    def test_path_syntax_check(self) -> None:
         """Test path tag syntax checking logic."""
-        syntax_error_file = ProjectFile('path_tag_error.html', path=TEST_PATH)
+        syntax_error_file: ProjectFile = ProjectFile('path_tag_error.html', path=TEST_PATH)
         with self.assertRaises(TagSyntaxError):
             syntax_error_file.update_relative_paths()
 
-    def test_load_project_files(self):
+    def test_load_project_files(self) -> None:
         """Test load_project_files() method."""
-        files = ProjectFile.load_project_files(base_path=EX_PROJECT_PATH)
+        files: list[ProjectFile] = ProjectFile.load_project_files(base_path=EX_PROJECT_PATH)
         self.assertGreater(len(files), 0)
 
-    def test_block_tag_name(self):
+    def test_block_tag_name(self) -> None:
         """Test ProjectFile.Block tag_name() method."""
         self.assertEqual(self.block.tag_name(), '{% block title %}')
