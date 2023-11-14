@@ -54,7 +54,7 @@ class Snippet(Component):
                 snippets.append(snippet)
 
             if not len(snippets):
-                log.warn(f'There are no snippets in {path}')
+                log.info(f'There are no snippets in {path}')
 
         else:
             log.warn('Snippets directory does not exist')

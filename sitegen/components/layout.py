@@ -82,6 +82,6 @@ class Layout(Component):
                 layouts[l.get_name()] = l
 
         if not len(layouts):
-            log.warn(f'There are no layouts in {path}')
+            log.info(f'There are no layouts in {path}')
 
         return layouts
