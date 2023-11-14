@@ -6,6 +6,7 @@ import os
 
 from sitegen.config import SNIPPETS_PATH, log
 from sitegen.components.component import Component
+from sitegen.components.constants import SNIPPET_PREFIX, SNIPPET_SUFFIX
 from sitegen.components.projectfile import ProjectFile
 
 
@@ -21,7 +22,7 @@ class Snippet(Component):
     def tag_name(self) -> str:
         """Tag for this Snippet as it would appear in a project file."""
         name: str = self.file_name.split('.')[0]
-        return '{{ ' + name + ' }}'
+        return SNIPPET_PREFIX + name + SNIPPET_SUFFIX
 
 
     def __repr__(self) -> str:
@@ -54,7 +55,7 @@ class Snippet(Component):
                 snippets.append(snippet)
 
             if not len(snippets):
-                log.warn(f'There are no snippets in {path}')
+                log.info(f'There are no snippets in {path}')
 
         else:
             log.warn('Snippets directory does not exist')

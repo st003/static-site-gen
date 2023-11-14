@@ -7,6 +7,7 @@ from typing import Optional
 
 from sitegen.config import LAYOUT_EXTENSIONS, LAYOUTS_PATH, log
 from sitegen.components.component import Component
+from sitegen.components.constants import TAG_BLOCK_PREFIX, TAG_SUFFIX
 from sitegen.components.projectfile import ProjectFile
 
 
@@ -25,14 +26,13 @@ class Layout(Component):
         lines in a list.
         """
 
-        pf_blocks: dict[str, ProjectFile.Block] = html_project_file.blocks
         new_lines: list[str] = []
 
         for line in self.lines:
             found_name: Optional[str] = self.get_block_name_from_line(line)
             # when the line contains a block
             if found_name is not None:
-                block: Optional[ProjectFile.Block] = pf_blocks.get(found_name)
+                block: Optional[ProjectFile.Block] = html_project_file.blocks.get(found_name)
                 if block is not None:
                     # replace the block tag in the layout with the content of the block
                     line = line.replace(block.tag_name(), block.content)
@@ -53,13 +53,11 @@ class Layout(Component):
     @staticmethod
     def get_block_name_from_line(line: str) -> Optional[str]:
         """Search a line for block tag and return the block name if found"""
-        # TODO - replace this with a constant defined in a central file
-        block_tag_prefix: str = '{% block '
-        block_tag_start: int = line.find(block_tag_prefix)
+        block_tag_start: int = line.find(TAG_BLOCK_PREFIX)
 
         if block_tag_start > -1:
-            name_start_index: int = block_tag_start + len(block_tag_prefix)
-            name_end_index: int = line.find(' %}')
+            name_start_index: int = block_tag_start + len(TAG_BLOCK_PREFIX)
+            name_end_index: int = line.find(TAG_SUFFIX)
             return line[name_start_index:name_end_index]
 
         return None
@@ -82,6 +80,6 @@ class Layout(Component):
                 layouts[l.get_name()] = l
 
         if not len(layouts):
-            log.warn(f'There are no layouts in {path}')
+            log.info(f'There are no layouts in {path}')
 
         return layouts

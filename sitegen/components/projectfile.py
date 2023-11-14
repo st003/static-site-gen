@@ -8,6 +8,7 @@ from typing import Optional
 
 import sitegen
 from sitegen.components.component import Component
+from sitegen.components.constants import TAG_BLOCK_END, TAG_BLOCK_PREFIX, TAG_LAYOUT_PREFIX, TAG_PATH_PREFIX, TAG_SUFFIX
 from sitegen.config import log, PROJECT_PATH
 from sitegen.exceptions import TagSyntaxError
 
@@ -47,13 +48,13 @@ class ProjectFile(Component):
         for line in self.lines:
 
             if not parsing_block:
-                if line.strip().startswith('{% block'):
+                if line.strip().startswith(TAG_BLOCK_PREFIX):
                     parsing_block = True
-                    name: str = line.removeprefix('{% block ').strip(' %}\n\r')
+                    name: str = line.removeprefix(TAG_BLOCK_PREFIX).strip(f'{TAG_SUFFIX}\n\r')
                     block = ProjectFile.Block(name)
             else:
                 if block is not None:
-                    if line.strip() == '{% endblock %}':
+                    if line.strip() == TAG_BLOCK_END:
                         block.content = block.content.rstrip('\n\r')
                         self.blocks[block.name] = block
                         parsing_block = False
@@ -66,8 +67,8 @@ class ProjectFile(Component):
 
     def load_layout(self) -> None:
         """Checks for and loads the layout name."""
-        if self.lines[0][0:9] == '{% layout':
-            self.layout_name: str = self.lines[0].removeprefix('{% layout ').strip(' %}\n\r')
+        if self.lines[0][0:len(TAG_LAYOUT_PREFIX)] == TAG_LAYOUT_PREFIX:
+            self.layout_name: str = self.lines[0].removeprefix(TAG_LAYOUT_PREFIX).strip(f'{TAG_SUFFIX}\n\r')
         else:
             self.layout_name = ''
 
@@ -100,14 +101,14 @@ class ProjectFile(Component):
 
             while check_for_paths:
 
-                tag_start: int = current_line.find('{% path')
+                tag_start: int = current_line.find(TAG_PATH_PREFIX)
 
                 # -1 is the return value of find() when substring is not found
                 if tag_start > -1:
 
                     # raw path should begin 8 chars after the tag start
                     path_start: int = tag_start + 8
-                    path_end: int = current_line.find(' %}')
+                    path_end: int = current_line.find(TAG_SUFFIX)
 
                     # when missing closing bracket
                     if path_end == -1:
@@ -116,7 +117,7 @@ class ProjectFile(Component):
                         raise TagSyntaxError(f'closing bracket for path tag missing in file: {self.file_name} at:\n\n{tag_preview}...\n')
 
                     raw_path: str = current_line[path_start:path_end]
-                    path_tag: str = '{% path ' + raw_path + ' %}'
+                    path_tag: str = TAG_PATH_PREFIX + raw_path + TAG_SUFFIX
                     log.debug(f'found path tag: {path_tag}')
 
                     for i in range(self.dir_level()):
@@ -168,7 +169,7 @@ class ProjectFile(Component):
 
         def tag_name(self) -> str:
             """The tag name as it would appear for this Block."""
-            return '{% block ' + self.name + ' %}'
+            return TAG_BLOCK_PREFIX + self.name + TAG_SUFFIX
 
         def __str__(self) -> str:
             return self.content

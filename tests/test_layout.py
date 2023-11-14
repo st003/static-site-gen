@@ -7,6 +7,7 @@ Run with: python -m unittest tests.test_layout
 import unittest
 from typing import Optional
 
+from sitegen.components.constants import TAG_LAYOUT_PREFIX
 from sitegen.components.layout import Layout
 from sitegen.components.projectfile import ProjectFile
 from sitegen.config import EX_LAYOUTS_PATH, EX_PROJECT_PATH
@@ -26,7 +27,7 @@ class TestLayout(unittest.TestCase):
         """Test compile() method."""
         pf: ProjectFile = ProjectFile('index.html', path=EX_PROJECT_PATH)
         pf.lines = self.layout.compile(pf)
-        layout_tag_index: int = str(pf).find('{% layout')
+        layout_tag_index: int = str(pf).find(TAG_LAYOUT_PREFIX)
         # str.find() returns -1 when match is not found
         self.assertEqual(layout_tag_index, -1)
 
