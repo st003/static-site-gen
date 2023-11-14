@@ -6,6 +6,7 @@ Run with: python -m unittest tests.test_projectfile
 """
 
 import unittest
+from typing import Optional
 
 from sitegen.components.projectfile import ProjectFile
 from sitegen.config import EX_PROJECT_PATH, TEST_PATH
@@ -15,7 +16,7 @@ from sitegen.exceptions import TagSyntaxError
 class TestProjectFile(unittest.TestCase):
 
     pf: ProjectFile = ProjectFile('index.html', path=EX_PROJECT_PATH)
-    block: ProjectFile.Block = pf.blocks[0]
+    block: Optional[ProjectFile.Block] = pf.blocks.get('title')
 
     def test_init(self) -> None:
         """Check base was loaded correctly."""
@@ -50,4 +51,7 @@ class TestProjectFile(unittest.TestCase):
 
     def test_block_tag_name(self) -> None:
         """Test ProjectFile.Block tag_name() method."""
-        self.assertEqual(self.block.tag_name(), '{% block title %}')
+        if self.block is not None:
+            self.assertEqual(self.block.tag_name(), '{% block title %}')
+        else:
+            self.fail('self.block is None')

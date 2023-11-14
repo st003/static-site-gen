@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from typing import Optional
 
 from sitegen.config import LAYOUT_EXTENSIONS, LAYOUTS_PATH, log
 from sitegen.components.component import Component
@@ -24,16 +25,44 @@ class Layout(Component):
         lines in a list.
         """
 
+        pf_blocks: dict[str, ProjectFile.Block] = html_project_file.blocks
         new_lines: list[str] = []
+
         for line in self.lines:
-            for block in html_project_file.blocks:
-                line = line.replace(block.tag_name(), block.content)
+            found_name: Optional[str] = self.get_block_name_from_line(line)
+            # when the line contains a block
+            if found_name is not None:
+                block: Optional[ProjectFile.Block] = pf_blocks.get(found_name)
+                if block is not None:
+                    # replace the block tag in the layout with the content of the block
+                    line = line.replace(block.tag_name(), block.content)
+
+                else:
+                    # when there is no matching block in the ProjectFile
+                    # replace the layout block tag with an empty string
+                    temp_block: ProjectFile.Block = ProjectFile.Block(found_name)
+                    line = line.replace(temp_block.tag_name(), '')
+
             new_lines.append(line)
         return new_lines
 
 
     def __repr__(self) -> str:
         return f'Layout(file_name={self.file_name})'
+
+    @staticmethod
+    def get_block_name_from_line(line: str) -> Optional[str]:
+        """Search a line for block tag and return the block name if found"""
+        # TODO - replace this with a constant defined in a central file
+        block_tag_prefix: str = '{% block '
+        block_tag_start: int = line.find(block_tag_prefix)
+
+        if block_tag_start > -1:
+            name_start_index: int = block_tag_start + len(block_tag_prefix)
+            name_end_index: int = line.find(' %}')
+            return line[name_start_index:name_end_index]
+
+        return None
 
 
     @staticmethod

@@ -40,7 +40,7 @@ class ProjectFile(Component):
         """Checks for and loads any text blocks."""
         log.debug(f'Loading Blocks for {repr(self)}:')
 
-        self.blocks: list[ProjectFile.Block] = []
+        self.blocks: dict[str, ProjectFile.Block] = {}
         parsing_block: bool = False
         block: Optional[ProjectFile.Block] = None
 
@@ -55,7 +55,7 @@ class ProjectFile(Component):
                 if block is not None:
                     if line.strip() == '{% endblock %}':
                         block.content = block.content.rstrip('\n\r')
-                        self.blocks.append(block)
+                        self.blocks[block.name] = block
                         parsing_block = False
                         block = None
                     else:
