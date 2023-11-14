@@ -1,19 +1,27 @@
 <!-- Example layout file. {% block %} tags are used to import text from a page -->
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="{% path styles/styles.css %}">
-		<title>{% block title %}</title>
-	</head>
-	<body>
-		<nav>
-			<a href="{% path index.html %}">Home</a>
-			<a href="{% path subpage/index.html %}">Sub-Page</a>
-			<a href="{% path subpage/subsubpage/index.html %}">Sub-Sub-Page</a>
-		</nav>
-		<main>
-			{% block main %}
-		</main>
-		<script src="{% path scripts/scripts.js %}"></script>
-	</body>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% path styles/styles.css %}">
+        <title>{% block title %}</title>
+    </head>
+    <body>
+        <div class="page">
+            <div class="content">
+                <nav>
+                    <a href="{% path index.html %}">Home</a>
+                    <a href="{% path subpage/index.html %}">Sub-Page</a>
+                    <a href="{% path subpage/subsubpage/index.html %}">Sub-Sub-Page</a>
+                </nav>
+                <main>
+                    {% block main %}
+                </main>
+            </div>
+            <footer>
+                {% block footer %}
+            </footer>
+        </div>
+        <script src="{% path scripts/scripts.js %}"></script>
+    </body>
 </html>

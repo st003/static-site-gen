@@ -5,6 +5,7 @@ Run with: python -m unittest tests.test_layout
 """
 
 import unittest
+from typing import Optional
 
 from sitegen.components.layout import Layout
 from sitegen.components.projectfile import ProjectFile
@@ -28,6 +29,18 @@ class TestLayout(unittest.TestCase):
         layout_tag_index: int = str(pf).find('{% layout')
         # str.find() returns -1 when match is not found
         self.assertEqual(layout_tag_index, -1)
+
+    def test_get_block_name_from_line(self) -> None:
+        """Test get_block_name_from_line() method."""
+        line: str = 'asdfg{% block name %}sdfsdfd'
+        name: Optional[str] = Layout.get_block_name_from_line(line)
+        self.assertEqual(name, 'name')
+
+    def test_get_block_name_from_line_with_no_block_tag(self) -> None:
+        """Test get_block_name_from_line() method when the line has no block tag."""
+        line: str = 'asdfgsdfsdfd'
+        name: Optional[str] = Layout.get_block_name_from_line(line)
+        self.assertEqual(name, None)
 
     def test_get_all(self) -> None:
         """Test get_all() method."""
