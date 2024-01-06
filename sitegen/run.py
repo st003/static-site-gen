@@ -4,7 +4,7 @@ import os.path
 import sys
 import time
 
-from sitegen import DIST_PATH
+import sitegen
 from sitegen.config import log, LAYOUTS_PATH, PROJECT_PATH, SNIPPETS_PATH
 from sitegen.config import EX_LAYOUTS_PATH, EX_PROJECT_PATH, EX_SNIPPETS_PATH
 from sitegen.components.layout import Layout
@@ -64,5 +64,5 @@ def run(use_examples: bool = False):
     end_time: float = time.perf_counter()
     exec_time: float = round((end_time - start_time), 5)
 
-    print(f'\nStatic site generation complete. Output files exported to: {DIST_PATH}')
+    print(f'\nStatic site generation complete. Output files exported to: {sitegen.DIST_PATH}')
     print(f'Execution time: {exec_time} seconds\n')
