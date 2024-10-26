@@ -30,13 +30,27 @@ class HTMLMinifier(HTMLParser):
         self._tokens.append(f'</{tag}>')
 
     def handle_data(self, data):
-        for char in data:
+        data_len: int = len(data)
+        for pos, char in enumerate(data):
+
             if char in self.ILLEGAL:
                 continue
+
+            if pos + 1 < data_len and char == ' ':
+
+                prev_char = data[pos - 1]
+                next_char = data[pos + 1]
+
+                if next_char == ' ':
+                    continue
+
+                elif prev_char == '>' and next_char == '<':
+                    continue
+
             self._tokens.append(char)
 
 
-sample_html: str = '<html  lang="en">\n    <body>\n        <h1>HTML Minifier Test!</h1>\n    </body>\n</html>'
+sample_html: str = '<html  lang="en">\n    <body>\n        <h1 style="color: black;" data-custom="mydata">HTML <strong>Minifier</strong> Test!</h1>\n    </body>\n</html>'
 
 minifier = HTMLMinifier()
 minifier.feed(sample_html)
