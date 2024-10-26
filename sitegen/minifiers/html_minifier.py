@@ -1,104 +1,69 @@
 """
 HTML minifier removes:
 
-1. Comments
-2. Tabs, newlines, and carriage returns
-3. Whitespace not wrapped by html tags
+1. Tabs, newlines, and carriage returns
+2. Comments
+3. Excess whitespace
 """
 
-import re
-from typing import Generator, Pattern
-
-# regex patterns
-space: Pattern = re.compile(r' ')
-double_space: Pattern = re.compile(r'  ')
-space_before_tag: Pattern = re.compile(r' <')
-non_space_whitespace_symbols: Pattern = re.compile(r'\t|\n|\r|\f|\v')
-html_tag_left_bracket: Pattern = re.compile(r'<')
-html_tag_right_bracket: Pattern = re.compile(r'>')
-html_comment_start: Pattern = re.compile(r'<!--')
-html_comment_end: Pattern = re.compile(r'-->')
-
-# flags
-comment_flag: bool = False
-tag_bracket_right: bool = False
-potential_inline_tag: bool = False
+COMMENT_START_TAG: str = '<!--'
+COMMENT_END_TAG: str = '-->'
+SINGLE_SPACE: str = ' '
+HTML_TAG_OPEN: str = '<'
+NON_SPACE_WHITESPACE_CHARS: set[str] = {'\t', '\n', '\r', '\f', '\v'}
 
 
-def minify_html(file_text: str) -> Generator[str, None, None]:
+def minify_html(file_text: str) -> str:
 
-    global comment_flag
-    global tag_bracket_right
-    global potential_inline_tag
+    tokens: list[str] = []
 
-    # simple pass (non-space whitespace & comments)
-    simple_pass_buffer: list[str] = []
+    comment_flag: bool = False
+    html_tag_flag: bool = False
 
     for pos, char in enumerate(file_text):
 
-        if non_space_whitespace_symbols.match(char):
+        try:
+
+            # comments
+            if not comment_flag:
+                potential_start_tag: str = file_text[pos:(pos + 4)]
+                if potential_start_tag == COMMENT_START_TAG:
+                    comment_flag = True
+
+            if comment_flag:
+
+                # do not try to look before the start of the string
+                if pos < 2:
+                    continue
+
+                potential_end_tag: str = file_text[(pos - 2):(pos + 1)]
+                if potential_end_tag == COMMENT_END_TAG:
+                    comment_flag = False
+
+                continue
+
+            # newlines, carriage returns, etc.
+            if char in NON_SPACE_WHITESPACE_CHARS:
+                continue
+
+            # TODO - if last char was new line, you can skip all spaces until tag open?
+
+            # excess spaces
+            if char == HTML_TAG_OPEN:
+                html_tag_flag = True
+
+            # TODO - check for <pre> here
+
+            if char == SINGLE_SPACE:
+
+                # check for double space
+                if file_text[pos + 1] == SINGLE_SPACE:
+                    continue
+
+            tokens.append(char)
+
+        except IndexError:
             continue
 
-        elif comment_flag:
+    return ''.join(tokens)
 
-            # look at the last 3 chars
-            comment_end_check: str = file_text[(pos - 2):(pos + 1)]
-
-            if html_comment_end.match(comment_end_check):
-                comment_flag = False
-                continue
-            else:
-                continue
-
-        else:
-
-            # look at next 4 chars for comment start
-            comment_start_check: str = file_text[pos:(pos + 4)]
-
-            if html_comment_start.match(comment_start_check):
-                comment_flag = True
-                continue
-
-        simple_pass_buffer.append(char)
-
-    simple_pass_result: str = ''.join(simple_pass_buffer)
-
-    # complex pass (single spaces, inline CSS and JavaScript)
-    for pos, char in enumerate(simple_pass_result):
-
-        # evaluate spaces
-        if space.match(char):
-            next_two_chars: str = simple_pass_result[pos:pos + 2]
-
-            # elminate extra spaces
-            if double_space.match(next_two_chars):
-                continue
-
-            # evaluate spaces before tags
-            elif space_before_tag.match(next_two_chars) and not potential_inline_tag:
-                continue
-
-        # check for html tag brackets
-        elif html_tag_right_bracket.match(char):
-            tag_bracket_right = True
-
-        elif html_tag_left_bracket.match(char):
-            tag_bracket_right = False
-            potential_inline_tag = False
-
-        # check for guaranteed yields directly following an html tag
-        elif tag_bracket_right:
-            potential_inline_tag = True
-
-        # TODO - <pre> support
-        # TODO - inline css
-        # TODO - inline javascript
-
-        yield char
-
-    # reset flags to initial state
-    comment_flag = False
-    tag_bracket_right = False
-    potential_inline_tag = False
-
-    return None
